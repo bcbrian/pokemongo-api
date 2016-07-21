@@ -12,15 +12,15 @@ class PokemonGOAPI {
   }
 
   async login(username, password, location, provider) {
-	if (provider !== 'ptc' && provider !== 'google') {
-	  throw new Error('Invalid provider')
-	}
-	this.player.provider = provider
 
-	await this.player.SetLocation(location)
-	await this.player.Login(username, password)
+  	if (provider !== 'ptc' && provider !== 'google') {
+  	  throw new Error('Invalid provider')
+  	}
+  	this.player.provider = provider
 
-	return this
+  	await this.player.setLocation(location)
+    await this.player.Login(username, password)
+  	return this
   }
 
   async Call(req) {

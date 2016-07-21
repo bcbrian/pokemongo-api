@@ -82,7 +82,7 @@ class Player{
     this.playerInfo.password = pass
     this.playerInfo.accessToken = res
 
-	return this.playerInfo
+	 return this.playerInfo
   }
 
   setLocation(location){
@@ -108,8 +108,8 @@ class Player{
           //return
           resolve(this.locationCoords)
         })
-		return
-      }
+		  return
+    }
 
 	  // use latitude longitude
 	  if (!location.coords) reject(new Error('Coords object missing'))
