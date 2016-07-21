@@ -164,14 +164,7 @@ class Connection {
           unknown2: 59,
         })
       })
-      auth_info = new RequestEnvelope.AuthInfo({
-      'provider': 'ptc',
-      'token':    new RequestEnvelope.AuthInfo.JWT({
-        'contents': playerInfo.accessToken,
-        'unknown2': 59
-      })
     });
-    })
   }
 
   _setAuthTicket(body){
