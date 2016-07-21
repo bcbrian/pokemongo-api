@@ -19,10 +19,6 @@ class Connection {
     this.request = Request.defaults({jar: this.cookieJar})
   }
 
-  _get_rpc_id(){
-    return 8145806132888207460
-  }
-
   Request(reqs,userObj){
     return new Promise( (resolve, reject) => {
       if (this.endPoint.length < 5 || !this.endpoint) reject('Error: No endPoint set!')
@@ -41,7 +37,6 @@ class Connection {
             'User-Agent': 'Niantic App'
         }
       }
-
 
       this.request.post(options, (err, response, body) => {
           if (response === undefined || body === undefined) {
@@ -68,8 +63,12 @@ class Connection {
                 ResponseType += _.upperFirst(_.toLower(word))
               })
               ResponseType += 'Response'
-              var proto = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/Responses/"+ResponseType+".proto" }).build("POGOProtos")
-              response[req] = proto.Networking.Requests.Responses[ResponseType].decode(res.returns[key])
+              console.log(ResponseType)
+              console.log(key)
+
+              var proto = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Responses/"+ResponseType+".proto" }).build("POGOProtos")
+              response[req] = proto.Networking.Responses[ResponseType].decode(res.returns[key])
+              console.log(response[req])
             })
           }
           console.log(response)
