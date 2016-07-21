@@ -3,15 +3,15 @@ import GoogleOAuth from 'gpsoauthnode'
 import Request from 'request'
 
 import {
-  ANDROID_ID
-  ,APP_NAME
-  ,CLIENT_SIG
-  ,OAUTH_SERVICE
-  ,LOGIN_URL
-  ,LOGIN_OAUTH
-  ,LOGIN_OAUTH_CLIENT_ID
-  ,LOGIN_OAUTH_REDIRECT_URI
-  ,LOGIN_OAUTH_CLIENT_SECRET
+  ANDROID_ID,
+  APP_NAME,
+  CLIENT_SIG,
+  OAUTH_SERVICE,
+  LOGIN_URL,
+  LOGIN_OAUTH,
+  LOGIN_OAUTH_CLIENT_ID,
+  LOGIN_OAUTH_REDIRECT_URI,
+  LOGIN_OAUTH_CLIENT_SECRET
 } from '../env'
 
 class Auth {
@@ -43,7 +43,7 @@ class Auth {
         this.GoogleAccount(user, pass)
         .then( (res, err) => {
           if (err) reject(err)
-            
+
           console.log('[i] Received Google access token!')
           resolve(res)
         })

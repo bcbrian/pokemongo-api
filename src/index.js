@@ -11,61 +11,27 @@ class PokemonGOAPI {
     this.debug = true
   }
 
-  login(username, password, location, provider) {
-    return new Promise( (resolve, reject) => {
-      if (provider !== 'ptc' && provider !== 'google') {
-        reject('Invalid provider')
-      }
-      this.player.SetProvider(provider)
+  async login(username, password, location, provider) {
+	if (provider !== 'ptc' && provider !== 'google') {
+	  throw new Error('Invalid provider')
+	}
+	this.player.provider = provider
 
-      this.player.SetLocation(location)
-      .then( res => {
+	await this.player.SetLocation(location)
+	await this.player.Login(username, password)
 
-        this.player.Login(username, password)
-        .then( user => {
-
-          resolve(this)
-
-          // // Set API Endpoint
-          // this.api.SetApiEndpoint(user)
-          // .then( res =>{
-
-
-
-          //   // making a standard call, like it is also done by the client
-          //   // self.get_player()
-          //   // self.get_hatched_eggs()
-          //   // self.get_inventory()
-          //   // self.check_awarded_badges()
-          //   // self.download_settings(hash="4a2e9bc330dae60e7b74fc85b98868ab4700802e")
-
-
-          //   this.UpdateProfile()
-          //   .then( prof => {
-          //     this.logged = true
-          //     resolve(this)
-          //   }).catch(err => reject(err) )
-
-
-          // }).catch(err => reject(err) )
-
-        }).catch(err => reject(err) )
-      }).catch(err => reject(err) )
-    })
+	return this
   }
 
-  Call(req){
-    return new Promise( (resolve, reject) => {
-      this.api.Request(req, this.player.playerInfo)
-      .then(res => {
-        var profile = ResponseEnvelop.ProfilePayload.decode(res.payload[0]).profile
-        this.player.SetProfileDetails(profile)
-        resolve(profile)
-      })
-      .catch(err => reject(err))
-    })
-  }
+  async Call(req) {
+	// TODO: ResponseEnvelop is undefined
+    let res = await this.api.Request(req, this.player.playerInfo)
+    let profile = ResponseEnvelop.ProfilePayload.decode(res.payload[0]).profile
 
+    this.player.profileDetails = profile
+
+	return profile
+  }
 
 }
 
