@@ -24,6 +24,7 @@ class Player{
   SetProvider(provider){
     this.playerInfo.provider = provider
   }
+
   SetProfileDetails(data){
     this.playerInfo.sessionData = data
   }
@@ -36,47 +37,50 @@ class Player{
       altitude
     }
   }
+
   GetCoords() {
     let {latitude, longitude} = this.playerInfo;
     return [latitude, longitude]
   }
+
   GetProfile(){
     return this.playerInfo;
   }
+
   GetCreatedDate(){
     var date = new moment((this.playerInfo.sessionData.creation_time.toString()/100)).format("dddd, MMMM Do YYYY, h:mm:ss a")
     console.log('[+] You are playing Pokemon Go since: {'+date+'}')
     return date
   }
+
   GetPokeStorage(){
     var storage = this.playerInfo.sessionData.poke_storage
-    console.log('[+] Poke Storage: {'+storage+'}')
+    console.log(`[+] Poke Storage: {${storage}}`)
     return storage
   }
+
   GetItemsStorage(){
     var storage = this.playerInfo.sessionData.item_storage
-    console.log('[+] Item Storage: {'+storage+'}')
+    console.log(`[+] Item Storage: {${storage}}`)
     return storage
   }
+
   GetCurrency(){
     var curr = this.playerInfo.sessionData.currency
     curr.map(obj => {
-      console.log('[+] Currency ('+obj.type+'): {'+obj.amount+'}')
+      console.log(`[+] Currency (${obj.type}): {${storage}}`)
     })
     return curr
   }
 
-  Login(user, pass){
-    return new Promise( (resolve, reject) =>{
-      this.Auth.login(user, pass, this.playerInfo.provider)
-      .then( res => {
-        this.playerInfo.username = user
-        this.playerInfo.password = pass
-        this.playerInfo.accessToken = res
-        resolve(this.playerInfo)
-      })
-      .catch(err => reject(err) )
-    })
+  async Login(user, pass){
+    let res = await this.Auth.login(user, pass, this.playerInfo.provider)
+
+    this.playerInfo.username = user
+    this.playerInfo.password = pass
+    this.playerInfo.accessToken = res
+
+	return this.playerInfo
   }
 
   SetLocation(location){
@@ -101,24 +105,24 @@ class Player{
           //return
           resolve(this.GetLocationCoords())
         })
-      }else if (location.type === 'coords') {
+      } else if (location.type === 'coords') {
         if (!location.coords) reject(new Error('Coords object missing'))
-  
+
           this.playerInfo.latitude = location.coords.latitude || this.playerInfo.latitude
           this.playerInfo.longitude = location.coords.longitude || this.playerInfo.longitude
           this.playerInfo.altitude = location.coords.altitude || this.playerInfo.altitude
 
-          GeoCoder.reverseGeocode(this.GetCoords(), (err, data) => {
+          GeoCoder.reverseGeocode(...this.GetCoords(), (err, data) => {
             if (data.status !== 'ZERO_RESULTS')
               this.playerInfo.locationName = data.results[0].formatted_address
 
             //return
             resolve (this.GetLocationCoords())
-          });
+          })
       }
     })
   }
-  
+
 }
 
 export default Player

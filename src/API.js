@@ -20,8 +20,8 @@ const {RequestEnvelop, ResponseEnvelop} = ProtoBuf.loadProtoFile("src/protos/pok
 
 class Connection {
   constructor(props) {
-    this.endPoint = 'https://pgorelease.nianticlabs.com/plfe/88/rpc'
-    this.auth_ticket ={}
+    this.endPoint = API_URL
+    this.auth_ticket = {}
     this.cookieJar = Request.jar()
     this.request = Request.defaults({jar: this.cookieJar})
   }

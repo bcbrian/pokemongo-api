@@ -2,16 +2,16 @@
 import Player from '~/Player'
 import API from '~/API'
 
-class PokemonGOAPI{
+class PokemonGOAPI {
 
   constructor(props) {
     this.player = new Player()
     this.api = new API()
-    this.logged=false
-    this.debug=true
+    this.logged = false
+    this.debug = true
   }
 
-  login(username, password, location, provider){
+  login(username, password, location, provider) {
     return new Promise( (resolve, reject) => {
       if (provider !== 'ptc' && provider !== 'google') {
         reject('Invalid provider')
@@ -22,7 +22,7 @@ class PokemonGOAPI{
       .then( res => {
 
         this.player.Login(username, password)
-        .then( user =>{
+        .then( user => {
 
           resolve(this)
 
@@ -57,7 +57,7 @@ class PokemonGOAPI{
   Call(req){
     return new Promise( (resolve, reject) => {
       this.api.Request(req, this.player.playerInfo)
-      .then(res => {      
+      .then(res => {
         var profile = ResponseEnvelop.ProfilePayload.decode(res.payload[0]).profile
         this.player.SetProfileDetails(profile)
         resolve(profile)

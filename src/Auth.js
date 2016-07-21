@@ -14,7 +14,7 @@ import {
   ,LOGIN_OAUTH_CLIENT_SECRET
 } from '../env'
 
-class Auth{
+class Auth {
   constructor(props) {
     this.google = new GoogleOAuth();
     this.options = {
@@ -28,7 +28,7 @@ class Auth{
     this.accessToken = ''
   }
 
-  login(user, pass, provider){
+  login(user, pass, provider) {
     return new Promise( (resolve, reject) => {
       console.log('[i] Logging with user: ' + user);
       if (provider === 'ptc') {
@@ -51,11 +51,11 @@ class Auth{
     })
   }
 
-  GoogleAccount(user, pass){
+  GoogleAccount(user, pass) {
     return new Promise( (resolve, reject) => {
-      this.google.login(user, pass, ANDROID_ID, function (err, data) {
+      this.google.login(user, pass, ANDROID_ID, (err, data) => {
         if (data) {
-          this.google.oauth(user, data.masterToken, data.androidId, OAUTH_SERVICE, APP_NAME, CLIENT_SIG, function (err, data) {
+          this.google.oauth(user, data.masterToken, data.androidId, OAUTH_SERVICE, APP_NAME, CLIENT_SIG, (err, data) => {
             if (err) reject(err)
             resolve (data.Auth)
           });
@@ -65,7 +65,7 @@ class Auth{
     })
   }
 
-  PokemonAccount(user, pass){
+  PokemonAccount(user, pass) {
     return new Promise( (resolve, reject) => {
       var loginOptions = {
         url: LOGIN_URL,
@@ -78,14 +78,14 @@ class Auth{
 
         const data = JSON.parse(body)
 
-        var options ={
+        var options = {
           url: LOGIN_URL,
           form: {
-              'lt': data.lt,
-              'execution': data.execution,
-              '_eventId': 'submit',
-              'username': user,
-              'password': pass
+              lt: data.lt,
+              execution: data.execution,
+              _eventId: 'submit',
+              username: user,
+              password: pass
           },
           headers: loginOptions.headers
         }
@@ -93,7 +93,7 @@ class Auth{
         this.request.post(options, (err, response, body) => {
           if (err) reject(err)
 
-          console.log(response.headers['location'])
+          console.log(response.headers.location)
           if (body) {
               const loginData = JSON.parse(body);
               if (loginData.errors && loginData.errors.length !== 0) {
@@ -101,15 +101,15 @@ class Auth{
               }
           }
 
-          const ticket = response.headers['location'].split('ticket=')[1]
+          const ticket = response.headers.location.split('ticket=')[1]
           options = {
               url: LOGIN_OAUTH,
               form: {
-                  'client_id': LOGIN_OAUTH_CLIENT_ID,
-                  'redirect_uri': LOGIN_OAUTH_REDIRECT_URI,
-                  'client_secret': LOGIN_OAUTH_CLIENT_SECRET,
-                  'grant_type': 'refresh_token',
-                  'code': ticket
+                  client_id: LOGIN_OAUTH_CLIENT_ID,
+                  redirect_uri: LOGIN_OAUTH_REDIRECT_URI,
+                  client_secret: LOGIN_OAUTH_CLIENT_SECRET,
+                  grant_type: 'refresh_token',
+                  code: ticket
               },
               headers: loginOptions.headers
           }
