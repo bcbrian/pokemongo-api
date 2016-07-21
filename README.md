@@ -2,8 +2,13 @@
 Pokemon Go API for nodejs
 
 
+THIS IS A WIP (Work in progress) feed free to help.
+
+
 ## Install
-```npm i -S pokemongo-api-js
+```
+npm i -S pokemongo-api-js
+```
 
 
 ## Example
