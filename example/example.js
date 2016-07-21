@@ -1,7 +1,9 @@
 import PokeAPI from '../src'
+import _ from 'lodash'
 
 //todo
 
+//user account
 //
 // Poke.UpdateProfile()
 // Poke.player.getCreatedDate()
@@ -10,9 +12,7 @@ import PokeAPI from '../src'
 const Poke = new PokeAPI()
 Poke.login(USERNAME, PASSWORD, LOGINLOCATION, PROVIDER)
 .then( api => {
-  api.Call(['GET_PLAYER']) //get profile
-  api.Call(['GET_PLAYER']) //get profile
+  api.Call(['GET_PLAYER', 'GET_INVENTORY']) //get profile
   
 })
 .catch(err => console.log(err))
-

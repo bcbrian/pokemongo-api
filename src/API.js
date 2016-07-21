@@ -2,6 +2,7 @@ import {
   API_URL
 } from '../env'
 
+import _ from 'lodash'
 import Request from 'request'
 import ProtoBuf from 'protobufjs'
 
@@ -40,7 +41,7 @@ class Connection {
             'User-Agent': 'Niantic App'
         }
       }
-      
+
 
       this.request.post(options, (err, response, body) => {
           if (response === undefined || body === undefined) {
@@ -55,7 +56,23 @@ class Connection {
                   res = e.decoded; // Decoded message with missing required fields
               }
           }
-          console.log(res)
+
+          //we have response (returns = response we want.. now lets parse it)
+          if (res.returns){
+            response ={}
+            reqs.map( (req,key) => {
+              //setFileName 
+              var ResponseType = ''
+              req = req.split("_")
+              req.map( word => {
+                ResponseType += _.upperFirst(_.toLower(word))
+              })
+              ResponseType += 'Response'
+              var proto = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/Responses/"+ResponseType+".proto" }).build("POGOProtos")
+              response[req] = proto.Networking.Requests.Responses[ResponseType].decode(res.returns[key])
+            })
+          }
+          console.log(response)
 
           if(res) 
             resolve(res);
