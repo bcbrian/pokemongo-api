@@ -71,7 +71,6 @@ class Connection {
               console.log(response[req])
             })
           }
-          console.log(response)
 
           if(res) 
             resolve(res);
@@ -92,12 +91,12 @@ class Connection {
   }
 
   _serializeHeader(req, userObj){
-    return new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope({
+    var ret = new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope({
       status_code: 2,
+      request_id: 8145806132888207460,
       latitude: userObj.latitude,
       longitude: userObj.longitude,
       altitude: userObj.altitude,
-      auth_ticket: this.auth_ticket,
       unknown12: 989,
       requests: req,
       auth_info: new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope.AuthInfo({
@@ -108,6 +107,8 @@ class Connection {
         }
       })
     })
+    console.log(ret)
+    return ret
   }
 
   _setAuthTicket(body){

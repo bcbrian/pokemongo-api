@@ -19,7 +19,13 @@ import Poke from pokemongo-api-js
 
 ```js
 const Poke = new PokeAPI()
-Poke.login('knuths', 'knuths123', LOGINLOCATION, 'ptc')
+Poke.login(
+  'user', 
+  'password', {
+    type: 'name',
+    name: 'Strandboulevarden 89, 2100 København Ø'
+  }
+  , 'ptc')
 .then( res => {
   
   res.Call('PLAYER_UPDATE')
