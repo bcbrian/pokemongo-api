@@ -16,7 +16,6 @@ class Player{
       altitude: 0,
       locationName: '',
       provider: '',
-      apiEndpoint: '',
       sessionData: {},
     }
     this.Auth = new Auth()

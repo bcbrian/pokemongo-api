@@ -11,6 +11,8 @@ const POGOResponseEnvelope = ProtoBuf.loadProtoFile({ root: "./src/", file: "POG
 const POGORequest = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/Request.proto" }).build("POGOProtos")
 const POGORequestType = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/RequestType.proto" }).build("POGOProtos")
 
+const {RequestEnvelop, ResponseEnvelop} = ProtoBuf.loadProtoFile("src/protos/pokemon.proto").build()
+
 class Connection {
   constructor(props) {
     this.endPoint = API_URL
@@ -21,12 +23,21 @@ class Connection {
 
   Request(reqs,userObj){
     return new Promise( (resolve, reject) => {
-      if (this.endPoint.length < 5 || !this.endpoint) reject('Error: No endPoint set!')
+      if (this.endPoint.length < 5 || !this.endPoint) reject('Error: No endPoint set!')
       if (userObj.latitude == 0 || userObj.longitude == 0) reject ('Error: position missing')
 
-      var req = this._serializeRequest(reqs)
-      var request = this._serializeHeader(req, userObj)
+      // set requests
+      var req =[]
+      var req = [
+        new POGORequest.Networking.Requests.Request(2),
+      ];
 
+      // set header
+      console.log(req)
+      var request = this._serializeHeader(req, userObj)
+      console.log(request)
+
+      //create buffer
       var protobuf = request.encode().toBuffer();
 
       var options = {
@@ -63,12 +74,9 @@ class Connection {
                 ResponseType += _.upperFirst(_.toLower(word))
               })
               ResponseType += 'Response'
-              console.log(ResponseType)
-              console.log(key)
 
               var proto = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Responses/"+ResponseType+".proto" }).build("POGOProtos")
               response[req] = proto.Networking.Responses[ResponseType].decode(res.returns[key])
-              console.log(response[req])
             })
           }
 
@@ -85,13 +93,13 @@ class Connection {
     var res = []
     reqs.map( req => {
       var reqId = POGORequestType.Networking.Requests.RequestType[req]
-      res.push(new POGORequest.Networking.Requests.Request(reqId))
+      res.push(new POGORequest.Networking.Requests.Request(2))
     })
     return res
   }
 
   _serializeHeader(req, userObj){
-    var ret = new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope({
+    return new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope({
       status_code: 2,
       request_id: 8145806132888207460,
       latitude: userObj.latitude,
@@ -99,16 +107,15 @@ class Connection {
       altitude: userObj.altitude,
       unknown12: 989,
       requests: req,
+      auth_ticket: this.auth_ticket,
       auth_info: new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope.AuthInfo({
         provider: userObj.provider,
-        token: {
+        token: new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope.AuthInfo.JWT({
           contents: userObj.accessToken,
           unknown2: 59,
-        }
+        })
       })
     })
-    console.log(ret)
-    return ret
   }
 
   _setAuthTicket(body){
