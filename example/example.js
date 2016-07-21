@@ -1,6 +1,5 @@
 import PokeAPI from '../src'
 
-//user account
 //todo
 
 //
@@ -11,8 +10,8 @@ import PokeAPI from '../src'
 const Poke = new PokeAPI()
 Poke.login(USERNAME, PASSWORD, LOGINLOCATION, PROVIDER)
 .then( res => {
-  res.Request(2) //get profile
-  res.Request(2)
+  res.Request(['GET_PLAYER']) //get profile
+  res.Request(['GET_PLAYER']) //get profile
   
 })
 .catch(err => console.log(err))

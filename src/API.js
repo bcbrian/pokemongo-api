@@ -3,8 +3,12 @@ import {
 } from '../env'
 
 import Request from 'request'
+import ProtoBuf from 'protobufjs'
 
-import PokomonGoBuf from 'pokemongo-protobuf';
+const POGORequestEnvelope = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Envelopes/RequestEnvelope.proto" }).build("POGOProtos")
+const POGOResponseEnvelope = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Envelopes/ResponseEnvelope.proto" }).build("POGOProtos")
+const POGORequest = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/Request.proto" }).build("POGOProtos")
+const POGORequestType = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/RequestType.proto" }).build("POGOProtos")
 
 class Connection {
   constructor(props) {
@@ -18,36 +22,13 @@ class Connection {
     return 8145806132888207460
   }
 
-  Request(requests,userObj){
+  Request(reqs,userObj){
     return new Promise( (resolve, reject) => {
       if (this.endPoint.length < 5 || !this.endpoint) reject('Error: No endPoint set!')
       if (userObj.latitude == 0 || userObj.longitude == 0) reject ('Error: position missing')
 
-      requests.map( req => {
-
-      })
-
-
-      var req = [
-        new POGORequest.Networking.Requests.Request(req_method)
-      ]
-
-      var request = new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope({
-        status_code: 2,
-        latitude: userObj.latitude,
-        longitude: userObj.longitude,
-        altitude: userObj.altitude,
-        auth_ticket: this.auth_ticket,
-        unknown12: 989,
-        requests: req,
-        auth_info: new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope.AuthInfo({
-          provider: userObj.provider,
-          token: {
-            contents: userObj.accessToken,
-            unknown2: 59,
-          }
-        })
-      })
+      var req = this._serializeRequest(reqs)
+      var request = this._serializeHeader(req, userObj)
 
       var protobuf = request.encode().toBuffer();
 
@@ -59,6 +40,7 @@ class Connection {
             'User-Agent': 'Niantic App'
         }
       }
+      
 
       this.request.post(options, (err, response, body) => {
           if (response === undefined || body === undefined) {
@@ -84,12 +66,32 @@ class Connection {
 
     })
   }
+  _serializeRequest(reqs){
+    var res = []
+    reqs.map( req => {
+      var reqId = POGORequestType.Networking.Requests.RequestType[req]
+      res.push(new POGORequest.Networking.Requests.Request(reqId))
+    })
+    return res
+  }
 
-  _serializeReqs(type, payload){
-    return PokomonGoBuf.serialize({
-      request_type: type,
-      request_message: payload,
-    }, 'POGOProtos.Networking.Requests.Request');
+  _serializeHeader(req, userObj){
+    return new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope({
+      status_code: 2,
+      latitude: userObj.latitude,
+      longitude: userObj.longitude,
+      altitude: userObj.altitude,
+      auth_ticket: this.auth_ticket,
+      unknown12: 989,
+      requests: req,
+      auth_info: new POGORequestEnvelope.Networking.Envelopes.RequestEnvelope.AuthInfo({
+        provider: userObj.provider,
+        token: {
+          contents: userObj.accessToken,
+          unknown2: 59,
+        }
+      })
+    })
   }
 
   _setAuthTicket(body){
