@@ -6,17 +6,7 @@ import _ from 'lodash'
 import Request from 'request'
 import ProtoBuf from 'protobufjs'
 
-
-
-const POGOProtos = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/POGOProtos.proto" }).build()
-console.log(POGOProtos)
-
-const POGORequestEnvelope = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Envelopes/RequestEnvelope.proto" }).build("POGOProtos")
-const POGOResponseEnvelope = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Envelopes/ResponseEnvelope.proto" }).build("POGOProtos")
-const POGORequest = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/Request.proto" }).build("POGOProtos")
-const POGORequestType = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Requests/RequestType.proto" }).build("POGOProtos")
-
-const {RequestEnvelop, ResponseEnvelop} = ProtoBuf.loadProtoFile("src/protos/pokemon.proto").build()
+const POGOProtos = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/POGOProtos.proto" }).build("POGOProtos")
 
 class Connection {
   constructor(props) {
@@ -32,12 +22,15 @@ class Connection {
       if (userObj.latitude == 0 || userObj.longitude == 0) reject ('Error: position missing')
 
       // set requests
-      var req = [
-        new POGORequest.Networking.Requests.Request({
+      var req2 = [
+        new POGOProtos.Networking.Requests.Request({
           request_type: 2
         })
       ];
-
+      var req = this._serializeRequest(reqs)
+      console.log(req)
+      console.log(req2)
+      
       // set header
       var request = this._serializeHeader(req, userObj)
       console.log(req)
@@ -53,42 +46,6 @@ class Connection {
             'User-Agent': 'Niantic App'
         }
       }
-
-      var req = [
-          new RequestEnvelop.Requests(2),
-      ];
-
-      console.log(req)
-      // Auth
-      var auth = new RequestEnvelop.AuthInfo({
-          provider: userObj.provider,
-          token: new RequestEnvelop.AuthInfo.JWT(userObj.accessToken, 59)
-      });
-
-      var f_req = new RequestEnvelop({
-          unknown1: 2,
-          rpc_id: 1469378659230941192,
-
-          requests: req,
-
-          latitude: userObj.latitude,
-          longitude: userObj.longitude,
-          altitude: userObj.altitude,
-
-          auth: auth,
-          unknown12: 989
-      });
-
-      var protobuf = f_req.encode().toBuffer();
-
-      var options = {
-          url: this.endPoint,
-          body: protobuf,
-          encoding: null,
-          headers: {
-              'User-Agent': 'Niantic App'
-          }
-      };
 
       // this.request.post(options, (err, response, body) => {
       //     if (response === undefined || body === undefined) {
@@ -141,8 +98,8 @@ class Connection {
   _serializeRequest(reqs){
     var res = []
     reqs.map( req => {
-      var reqId = POGORequestType.Networking.Requests.RequestType[req]
-      res.push(new POGORequest.Networking.Requests.Request(2))
+      var reqId = POGOProtos.Networking.Requests.RequestType[req]
+      res.push(new POGOProtos.Networking.Requests.Request(2))
     })
     return res
   }
