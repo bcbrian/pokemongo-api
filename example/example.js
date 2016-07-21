@@ -9,9 +9,9 @@ import PokeAPI from '../src'
 
 const Poke = new PokeAPI()
 Poke.login(USERNAME, PASSWORD, LOGINLOCATION, PROVIDER)
-.then( res => {
-  res.Request(['GET_PLAYER']) //get profile
-  res.Request(['GET_PLAYER']) //get profile
+.then( api => {
+  api.Call(['GET_PLAYER']) //get profile
+  api.Call(['GET_PLAYER']) //get profile
   
 })
 .catch(err => console.log(err))

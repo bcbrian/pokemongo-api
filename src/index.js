@@ -54,7 +54,7 @@ class PokemonGOAPI{
     })
   }
 
-  Request(req){
+  Call(req){
     return new Promise( (resolve, reject) => {
       this.api.Request(req, this.player.playerInfo)
       .then(res => {      
