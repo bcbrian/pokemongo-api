@@ -13,12 +13,11 @@ var username = process.env.PGO_USERNAME || 'USER'
 var password = process.env.PGO_PASSWORD || 'PASS'
 var provider = process.env.PGO_PROVIDER || 'ptc'
 
-
-
 const Poke = new PokeAPI()
-Poke.login(username, password, location, provider)
-.then( api => {
-  api.Call(['GET_PLAYER']) //get profile
-  
-})
-.catch(err => console.log(err))
+
+async function init() {
+  let api = await Poke.login(username, password, location, provider)
+  let res = await api.Call(['GET_PLAYER']) //get profile
+}
+
+init()
