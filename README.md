@@ -21,9 +21,12 @@ import Poke from pokemongo-api-js
 const Poke = new PokeAPI()
 Poke.login('knuths', 'knuths123', LOGINLOCATION, 'ptc')
 .then( res => {
-  res.player.GetCreatedDate()
-  res.player.GetPokeStorage()
-  res.player.GetCurrency()
+  
+  res.Call('PLAYER_UPDATE')
+  .then(res = {
+    //do something?
+  })
+  .catch( err => console.log(err))
   
 })
 .catch(err => console.log(err))
