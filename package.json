@@ -35,7 +35,6 @@
     "lodash": "^4.13.1",
     "moment": "^2.14.1",
     "node-env-file": "^0.1.8",
-    "path": "^0.12.7",
     "protobufjs": "^5.0.1",
     "request": "^2.73.0"
   }

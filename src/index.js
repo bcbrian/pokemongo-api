@@ -1,13 +1,16 @@
 import Player from '~/Player'
 import API from '~/API'
+import Map from '~/Map'
 
 class PokemonGOAPI {
 
   constructor(props) {
     this.player = new Player()
     this.api = new API()
+    this.map = new Map()
     this.logged = false
     this.debug = true
+    this.useHartBeat = false
 
   }
 
@@ -54,16 +57,13 @@ class PokemonGOAPI {
   }
   async _loopHartBeat(){
     while(this.useHartBeat){
-      var finalWalk = [];
-      m.getNeighbors(playerInfo).sort().forEach(function(k) {
-        finalWalk.push(k.id());
-      });
+      var finalWalk = this.map.getNeighbors(this.player.playerInfo)
       var nullarray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
       let res = await this.Call[{ 
         request: 'GET_MAP_OBJECTS',
         message: {
-          cell_id: 
+          cell_id: finalWalk,
           since_timestamp_ms: nullarray,
           latitude: this.player.playerInfo.latitude,
           longitude: this.player.playerInfo.longitude,
