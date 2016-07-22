@@ -93,7 +93,7 @@ class PokemonGOAPI {
     // fort_id
     // pokemon_id
     
-    let res = await this.Call[{
+    let res = await this.Call([{
       request: 'FORT_DEPLOY_POKEMON',
       message: {
         fort_id: fort_id,
@@ -101,7 +101,7 @@ class PokemonGOAPI {
         player_latitude: this.player.playerInfo.latitude,
         player_longitude: this.player.playerInfo.longitude,
       }
-    }]
+    }])
     return res
   }
 
@@ -110,14 +110,14 @@ class PokemonGOAPI {
     // add checks for input 
     // fort = should be object with (fort_id, latitude, longitude)
 
-    let res = await this.Call[{
+    let res = await this.Call([{
       request: 'FORT_DETAILS',
       message: {
         fort_id: fort.fort_id,
         latitude: fort.latitude,
         longitude: fort.longitude,
       }
-    }]
+    }])
     return res
   }
 
@@ -126,7 +126,7 @@ class PokemonGOAPI {
     // add checks for input 
     // fort = should be object with (fort_id,fort_latitude,fort_longitude)
 
-    let res = await this.Call[{
+    let res = await this.Call([{
       request: 'FORT_SEARCH',
       message: {
         fort_id: fort.fort_id
@@ -135,7 +135,7 @@ class PokemonGOAPI {
         fort_latitude: fort.fort_latitude
         fort_longitude: fort.fort_longitude
       }
-    }]
+    }])
     return res
   }
 
@@ -146,7 +146,7 @@ class PokemonGOAPI {
 
     var spin_modifier 0.85 + Math.random() * 0.15 
 
-    let res = await this.Call[{
+    let res = await this.Call([{
       request: 'CATCH_POKEMON',
       message: {
         encounter_id: pokemon.encounter_id,
@@ -157,7 +157,7 @@ class PokemonGOAPI {
         spin_modifier: spin_modifier,
         normalized_hit_position: 1.0,
       }
-    }]
+    }])
     return res
   }
 
@@ -167,7 +167,7 @@ class PokemonGOAPI {
     // enc_id = integer
     // spawn_id = string
 
-    let res = await this.Call[{
+    let res = await this.Call([{
       request: 'ENCOUNTER',
       message: {
         encounter_id: enc_id,
@@ -175,7 +175,7 @@ class PokemonGOAPI {
         player_latitude: this.player.playerInfo.latitude,
         player_longitude: this.player.playerInfo.longitude,
       }
-    }]
+    }])
     return res
   }
 
