@@ -1,13 +1,13 @@
 import Player from '~/Player'
 import API from '~/API'
-import Map from '~/Map'
+import PlayerMap from '~/PlayerMap'
 
 class PokemonGOAPI {
 
   constructor(props) {
     this.player = new Player()
     this.api = new API()
-    this.map = new Map()
+    this.map = new PlayerMap()
     this.logged = false
     this.debug = true
     this.useHartBeat = false
