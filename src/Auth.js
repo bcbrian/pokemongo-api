@@ -36,7 +36,7 @@ class Auth {
       res = await this.PokemonAccount(user, pass)
       console.log('[i] Received PTC access token!')
     } else {
-      res = awiat this.GoogleAccount(user, pass)
+      res = await this.GoogleAccount(user, pass)
       console.log('[i] Received Google access token!')
     }
     
