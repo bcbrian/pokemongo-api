@@ -2,7 +2,7 @@
 Pokemon Go API for nodejs
 
 
-THIS IS A WIP (Work in progress) feed free to help.
+THIS IS A WIP (Work in progress) feel free to help.
 
 
 ## Install

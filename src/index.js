@@ -1,4 +1,3 @@
-
 import Player from '~/Player'
 import API from '~/API'
 
@@ -13,24 +12,24 @@ class PokemonGOAPI {
 
   async login(username, password, location, provider) {
 
-  	if (provider !== 'ptc' && provider !== 'google') {
-  	  throw new Error('Invalid provider')
-  	}
-  	this.player.provider = provider
+    if (provider !== 'ptc' && provider !== 'google') {
+      throw new Error('Invalid provider')
+    }
+    this.player.provider = provider
 
-  	await this.player.setLocation(location)
+    await this.player.setLocation(location)
     await this.player.Login(username, password)
-  	return this
+    return this
   }
 
   async Call(req) {
-	// TODO: ResponseEnvelop is undefined
+    // TODO: ResponseEnvelop is undefined
     let res = await this.api.Request(req, this.player.playerInfo)
     let profile = ResponseEnvelop.ProfilePayload.decode(res.payload[0]).profile
 
     this.player.profileDetails = profile
 
-	return profile
+    return profile
   }
 
 }
