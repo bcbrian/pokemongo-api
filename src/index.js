@@ -32,6 +32,11 @@ class PokemonGOAPI {
     return res
   }
 
+  async SetLocation(){
+    var promise = await this.player.setLocation(location)
+    return promise
+  }
+
   async GetInventory(){
     let res = await this.Call[{ request: 'GET_INVENTORY' }]
     return res
