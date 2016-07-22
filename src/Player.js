@@ -85,18 +85,19 @@ class Player {
   }
 
   setLocation(location) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (location.type !== 'name' && location.type !== 'coords')
-        reject(new Error('Invalid location type'))
+        throw new Error('Invalid location type')
 
       // use google map search by name
       if (location.type === 'name') {
-        if (!location.name) reject(new Error('You should add a location name'))
+        if (!location.name) 
+          throw new Error('You should add a location name')
 
         const locationName = location.name;
         GeoCoder.geocode(locationName, (err, data) => {
           if (err || data.status === 'ZERO_RESULTS')
-            reject(new Error('location not found'))
+            throw new Error('location not found')
 
           let {lat, lng} = data.results[0].geometry.location
 
@@ -111,7 +112,7 @@ class Player {
       }
 
       // use latitude longitude
-      if (!location.coords) reject(new Error('Coords object missing'))
+      if (!location.coords) throw new Error('Coords object missing')
 
       this.playerInfo.latitude = location.coords.latitude || this.playerInfo.latitude
       this.playerInfo.longitude = location.coords.longitude || this.playerInfo.longitude
