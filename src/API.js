@@ -19,9 +19,7 @@ class Connection {
   Request(requests, userObj){
     this._request(requests,userObj)
     .then(res => {
-      console.log(res.returns[0])
       //we have response (returns = response we want.. now lets parse it)
-
       var respt = {};
       requests.map( (req,key) => {
 
