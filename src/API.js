@@ -5,7 +5,6 @@ import {
 import _ from 'lodash'
 import Request from 'request'
 import ProtoBuf from 'protobufjs'
-import sleep from 'sleep'
 
 const POGOProtos = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/POGOProtos.proto" }).build("POGOProtos")
 
@@ -100,8 +99,11 @@ class Connection {
       return this.endPoint
     } else {
       console.error('[!] Endpoint missing in request, lets try again.. in 5 seconds');
-      sleep.sleep(5);
-      return this.setEndpoint(user)
+      return new Promise( resolve =>
+        setTimeout(() =>
+          resolve(this.setEndpoint(user))
+        , 5000)
+      )
     }
   }
 
