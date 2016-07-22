@@ -19,6 +19,7 @@ class PokemonGOAPI {
 
     await this.player.setLocation(location)
     await this.player.Login(username, password)
+    await this.api.setEndpoint(this.player.playerInfo)
     return this
   }
 

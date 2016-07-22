@@ -16,30 +16,42 @@ class Connection {
     this.request = Request.defaults({jar: this.cookieJar})
   }
 
-  Request(reqs,userObj) {
+  Request(reqs, userObj){
+    this._request(reqs,userObj)
+    .then(res => {
+      console.log('res')
+      //we have response (returns = response we want.. now lets parse it)
+      response ={}
+      reqs.map( (req,key) => {
+        console.log(req)
+        //setFileName 
+        var ResponseType = ''
+        req = req.split("_")
+        req.map( word => {
+          ResponseType += _.upperFirst(_.toLower(word))
+        })
+        ResponseType += 'Response'
+
+        console.log(ResponseType)
+        var proto = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Responses/"+ResponseType+".proto" }).build("POGOProtos")
+        response[req] = proto.Networking.Responses[ResponseType].decode(res.returns[key])
+        console.log(response[req])
+      })
+
+      var profile = POGOProtos.Networking.Responses.GetPlayerResponse.decode(res.returns[0])
+    })
+  }
+
+
+  _request(reqs,userObj) {
     return new Promise( resolve => {
       if (this.endPoint.length < 5 || !this.endPoint) throw new Error('No endPoint set!')
       if (userObj.latitude == 0 || userObj.longitude == 0) throw new Error('position missing')
 
-
-      if (this.endPoint == API_URL){
-        var RequestType = POGOProtos.Networking.Requests.RequestType
-        var req = this._serializeRequest([
-          RequestType('GET_PLAYER')
-          RequestType('GET_HATCHED_EGGS')
-          RequestType('GET_INVENTORY')
-          RequestType('CHECK_AWARDED_BADGES')
-          RequestType('DOWNLOAD_SETTINGS')
-        ])
-      }else{
-        var req = this._serializeRequest(reqs)
-      }
-      // set requests
-      // set header
+      var req = this._serializeRequest(reqs)
       var request = this._serializeHeader(req, userObj)
 
-      console.log(request)
-      //create buffer
+      // //create buffer
       var protobuf = request.encode().toBuffer();
 
       var options = {
@@ -50,58 +62,61 @@ class Connection {
           'User-Agent': 'Niantic App'
         }
       }
+
       this.request.post(options, (err, response, body) => {
-          if (response === undefined || body === undefined) {
-            console.error('[!] RPC Server offline');
-            throw new Error('RPC Server offline');
+        if (response === undefined || body === undefined) {
+          console.error('[!] RPC Server offline');
+          throw new Error('RPC Server offline');
+        }
+
+        try {
+          var res = POGOProtos.Networking.Envelopes.ResponseEnvelope.decode(body);
+        } catch (e) {
+          if (e.decoded) { // Truncated
+            console.warn(e);
+            res = e.decoded; // Decoded message with missing required fields
           }
-          try {
-            var res = POGOProtos.Networking.Envelopes.ResponseEnvelope.decode(body);
-          } catch (e) {
-            if (e.decoded) { // Truncated
-              console.warn(e);
-              res = e.decoded; // Decoded message with missing required fields
-            }
-          }
+        }
 
-          //set endPoint
-          console.log(res.endPoint)
-          if (res.endPoint) this.endPoint == res.endPoint
+        if (res.auth_ticket) 
+          this.auth_ticket = res.auth_ticket
 
-          //we have response (returns = response we want.. now lets parse it)
-          if (res.returns){
-            // response ={}
-            // reqs.map( (req,key) => {
-            //   //setFileName 
-            //   var ResponseType = ''
-            //   req = req.split("_")
-            //   req.map( word => {
-            //     ResponseType += _.upperFirst(_.toLower(word))
-            //   })
-            //   ResponseType += 'Response'
-
-            //   var proto = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Responses/"+ResponseType+".proto" }).build("POGOProtos")
-            //   response[req] = proto.Networking.Responses[ResponseType].decode(res.returns[key])
-            //   console.log(response[req])
-            // })
-
-            var profile = POGOProtos.Networking.Responses.GetPlayerResponse.decode(res.returns[0])
-            console.log(profile)
-          }
-          
-          resolve(res || this._request(userObj.endPoint, userObj.accessToken, req))
+        if (res.returns) resolve(res)
+        else (reject) => reject("Nothing in reponse..")
       })
     })
   }
-  
-  getEndPoint(){
 
+  setEndpoint(user){
+    this._request([
+      'GET_PLAYER',
+      'GET_HATCHED_EGGS',
+      'GET_INVENTORY',
+      'CHECK_AWARDED_BADGES',
+      'DOWNLOAD_SETTINGS',
+    ],user)
+    .then(res => {
+      if (res.api_url){
+        this.endPoint = `https://${res.api_url}/rpc`
+        console.error('[!] Endpoint set: '+ this.endPoint);
+      }else{
+        console.error('[!] Endpoint missing in request');
+        throw new Error('Endpoint missing in request');
+      }
+    })
+
+  }
+  
+  _setEndpoint(body) {
+    if (res.api_url) {
+      console.log('[i] Received API Endpoint: ' + this.endPoint)
+      resolve(this.endPoint)
+    }
   }
   
   _serializeRequest(reqs) {
     return reqs.map( req => {
       var reqId = POGOProtos.Networking.Requests.RequestType[req]
-      console.log(reqId)
       return new POGOProtos.Networking.Requests.Request({'request_type': reqId})
     })
   }
@@ -109,7 +124,7 @@ class Connection {
   _serializeHeader(req, userObj) {
     var env = {
       status_code: 2,
-      request_id: 8145806132888207460,
+      request_id: 1469378659230941192,
       latitude: userObj.latitude,
       longitude: userObj.longitude,
       altitude: userObj.altitude,
@@ -129,21 +144,9 @@ class Connection {
     return new POGOProtos.Networking.Envelopes.RequestEnvelope(env);
   }
 
-  _setAuthTicket(body) {
+  set authTicket(body) {
     if (res.auth_ticket)
       this.auth_ticket = res.auth_ticket
-  }
-  
-  _setEndpoint(body) {
-    if (res.api_url) {
-      this.endPoint = `https://${res.api_url}/rpc`
-      console.log('[i] Received API Endpoint: ' + this.endPoint)
-      resolve(this.endPoint)
-    }
-  }
-
-  _parseResponse(response) {
-
   }
 
 }
