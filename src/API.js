@@ -16,41 +16,43 @@ class Connection {
     this.request = Request.defaults({jar: this.cookieJar})
   }
 
-  Request(reqs, userObj){
-    this._request(reqs,userObj)
+  Request(requests, userObj){
+    this._request(requests,userObj)
     .then(res => {
-      console.log('res')
+      console.log(res.returns[0])
       //we have response (returns = response we want.. now lets parse it)
-      response ={}
-      reqs.map( (req,key) => {
-        console.log(req)
+
+      var respt = {};
+      requests.map( (req,key) => {
+
         //setFileName 
         var ResponseType = ''
         req = req.split("_")
         req.map( word => {
           ResponseType += _.upperFirst(_.toLower(word))
         })
+
         ResponseType += 'Response'
 
-        console.log(ResponseType)
-        var proto = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/Networking/Responses/"+ResponseType+".proto" }).build("POGOProtos")
-        response[req] = proto.Networking.Responses[ResponseType].decode(res.returns[key])
-        console.log(response[req])
+        var Responses = POGOProtos.Networking.Responses
+        try {
+          respt[ResponseType] = Responses[ResponseType].decode(res.returns[key]);
+        } catch(e) {
+          respt[ResponseType] = {'error': e};
+          console.log('err')
+        }
       })
-
-      var profile = POGOProtos.Networking.Responses.GetPlayerResponse.decode(res.returns[0])
     })
   }
 
 
   _request(reqs,userObj) {
-    return new Promise( resolve => {
+    return new Promise( (resolve, reject) => {
       if (this.endPoint.length < 5 || !this.endPoint) throw new Error('No endPoint set!')
       if (userObj.latitude == 0 || userObj.longitude == 0) throw new Error('position missing')
 
       var req = this._serializeRequest(reqs)
       var request = this._serializeHeader(req, userObj)
-
       // //create buffer
       var protobuf = request.encode().toBuffer();
 
@@ -82,29 +84,31 @@ class Connection {
           this.auth_ticket = res.auth_ticket
 
         if (res.returns) resolve(res)
-        else (reject) => reject("Nothing in reponse..")
+        else reject("Nothing in reponse..")
       })
     })
   }
 
   setEndpoint(user){
-    this._request([
-      'GET_PLAYER',
-      'GET_HATCHED_EGGS',
-      'GET_INVENTORY',
-      'CHECK_AWARDED_BADGES',
-      'DOWNLOAD_SETTINGS',
-    ],user)
-    .then(res => {
-      if (res.api_url){
-        this.endPoint = `https://${res.api_url}/rpc`
-        console.error('[!] Endpoint set: '+ this.endPoint);
-      }else{
-        console.error('[!] Endpoint missing in request');
-        throw new Error('Endpoint missing in request');
-      }
+    return new Promise( resolve => {
+      this._request([
+        'GET_PLAYER',
+        'GET_HATCHED_EGGS',
+        'GET_INVENTORY',
+        'CHECK_AWARDED_BADGES',
+        'DOWNLOAD_SETTINGS',
+      ],user)
+      .then(res => {
+        if (res.api_url){
+          this.endPoint = `https://${res.api_url}/rpc`
+          console.error('[!] Endpoint set: '+ this.endPoint);
+          resolve(this.endPoint)
+        }else{
+          console.error('[!] Endpoint missing in request');
+          throw new Error('Endpoint missing in request');
+        }
+      })
     })
-
   }
   
   _setEndpoint(body) {
@@ -122,7 +126,7 @@ class Connection {
   }
 
   _serializeHeader(req, userObj) {
-    var env = {
+    var data = {
       status_code: 2,
       request_id: 1469378659230941192,
       latitude: userObj.latitude,
@@ -130,7 +134,12 @@ class Connection {
       altitude: userObj.altitude,
       unknown12: 989,
       requests: req,
-      auth_info: new POGOProtos.Networking.Envelopes.RequestEnvelope.AuthInfo({
+    }
+
+    if(this.auth_ticket != null) {
+      data.auth_ticket = this.auth_ticket
+    } else {
+      data.auth_info = new POGOProtos.Networking.Envelopes.RequestEnvelope.AuthInfo({
         provider: userObj.provider,
         token: new POGOProtos.Networking.Envelopes.RequestEnvelope.AuthInfo.JWT({
           contents: userObj.accessToken,
@@ -139,9 +148,11 @@ class Connection {
       })
     }
 
-    if (this.auth_ticket !== null)
-      env.auth_ticket = this.auth_ticket
-    return new POGOProtos.Networking.Envelopes.RequestEnvelope(env);
+    if (this.auth_ticket != null)
+      data.auth_ticket = this.auth_ticket
+
+
+    return new POGOProtos.Networking.Envelopes.RequestEnvelope(data);
   }
 
   set authTicket(body) {

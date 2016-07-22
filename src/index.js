@@ -20,17 +20,13 @@ class PokemonGOAPI {
     await this.player.setLocation(location)
     await this.player.Login(username, password)
     await this.api.setEndpoint(this.player.playerInfo)
+
     return this
   }
 
   async Call(req) {
-    // TODO: ResponseEnvelop is undefined
     let res = await this.api.Request(req, this.player.playerInfo)
-    let profile = ResponseEnvelop.ProfilePayload.decode(res.payload[0]).profile
-
-    this.player.profileDetails = profile
-
-    return profile
+    return res
   }
 
 }

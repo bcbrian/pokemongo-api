@@ -1,11 +1,15 @@
 syntax = "proto3";
 package POGOProtos;
 
+
+//Envelopes
 import public "POGOProtos/Networking/Envelopes/AuthTicket.proto";
 import public "POGOProtos/Networking/Envelopes/RequestEnvelope.proto";
 import public "POGOProtos/Networking/Envelopes/ResponseEnvelope.proto";
 import public "POGOProtos/Networking/Envelopes/Unknown6.proto";
 import public "POGOProtos/Networking/Envelopes/Unknown6Response.proto";
+
+//Requests
 import public "POGOProtos/Networking/Requests/Request.proto";
 import public "POGOProtos/Networking/Requests/RequestType.proto";
 

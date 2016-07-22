@@ -16,8 +16,8 @@ var provider = process.env.PGO_PROVIDER || 'ptc'
 const Poke = new PokeAPI()
 
 async function init() {
-  let api = await Poke.login(username, password, location, provider)
-  let res = await api.Call(['GET_PLAYER']) //get profile
+  const api = await Poke.login(username, password, location, provider)
+  let res = await Poke.Call(['GET_PLAYER']) //get profile
 }
 
 init()
