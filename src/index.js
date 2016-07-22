@@ -69,10 +69,29 @@ class PokemonGOAPI {
     }
   }
 
-  async CatchPokemon(pokemon, spawn_id){
+  async FortSearch(fort){
     // TODO 
-    //add checks for input 
-    
+    // add checks for input 
+    // fort = should be object with (fort_id,fort_latitude,fort_longitude)
+
+    let res = await this.Call[{
+      request: 'FORT_SEARCH',
+      message: {
+        fort_id: fort.fort_id
+        latitude: this.player.playerInfo.latitude,
+        longitude: this.player.playerInfo.longitude,
+        fort_latitude: fort.fort_latitude
+        fort_longitude: fort.fort_longitude
+      }
+    }]
+    return res
+  }
+
+  async CatchPokemon(pokemon){
+    // TODO 
+    // add checks for input 
+    // pokemon = should be object with (encounter_id and spawn_point_id)
+
     var spin_modifier 0.85 + Math.random() * 0.15 
 
     let res = await this.Call[{
@@ -85,6 +104,24 @@ class PokemonGOAPI {
         hit_pokemon: true,
         spin_modifier: spin_modifier,
         normalized_hit_position: 1.0,
+      }
+    }]
+    return res
+  }
+
+  async EncounterPokemon(enc_id, spawn_id){
+    // TODO 
+    // add checks for input 
+    // enc_id = integer
+    // spawn_id = string
+
+    let res = await this.Call[{
+      request: 'ENCOUNTER',
+      message: {
+        encounter_id: enc_id,
+        spawn_point_id: spawn_id,
+        latitude: this.player.playerInfo.latitude,
+        longitude: this.player.playerInfo.longitude,
       }
     }]
     return res
