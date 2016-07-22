@@ -69,6 +69,58 @@ class PokemonGOAPI {
     }
   }
 
+  async FortRecallPokemon(fort_id, pokemon_id){
+    // TODO 
+    // add checks for input 
+    // fort_id
+    // pokemon_id
+
+    let res = await this.Call[{
+      request: 'FORT_RECALL_POKEMON',
+      message: {
+        fort_id: fort_id,
+        pokemon_id: pokemon_id,
+        player_latitude: this.player.playerInfo.latitude,
+        player_longitude: this.player.playerInfo.longitude,
+      }
+    }]
+    return res
+  }
+
+  async FortDeployPokemon(fort_id, pokemon_id){
+    // TODO 
+    // add checks for input 
+    // fort_id
+    // pokemon_id
+    
+    let res = await this.Call[{
+      request: 'FORT_DEPLOY_POKEMON',
+      message: {
+        fort_id: fort_id,
+        pokemon_id: pokemon_id,
+        player_latitude: this.player.playerInfo.latitude,
+        player_longitude: this.player.playerInfo.longitude,
+      }
+    }]
+    return res
+  }
+
+  async FortDetails(fort){
+    // TODO 
+    // add checks for input 
+    // fort = should be object with (fort_id, latitude, longitude)
+
+    let res = await this.Call[{
+      request: 'FORT_DETAILS',
+      message: {
+        fort_id: fort.fort_id,
+        latitude: fort.latitude,
+        longitude: fort.longitude,
+      }
+    }]
+    return res
+  }
+
   async FortSearch(fort){
     // TODO 
     // add checks for input 
@@ -78,8 +130,8 @@ class PokemonGOAPI {
       request: 'FORT_SEARCH',
       message: {
         fort_id: fort.fort_id
-        latitude: this.player.playerInfo.latitude,
-        longitude: this.player.playerInfo.longitude,
+        player_latitude: this.player.playerInfo.latitude,
+        player_longitude: this.player.playerInfo.longitude,
         fort_latitude: fort.fort_latitude
         fort_longitude: fort.fort_longitude
       }
@@ -120,24 +172,8 @@ class PokemonGOAPI {
       message: {
         encounter_id: enc_id,
         spawn_point_id: spawn_id,
-        latitude: this.player.playerInfo.latitude,
-        longitude: this.player.playerInfo.longitude,
-      }
-    }]
-    return res
-  }
-
-  async EncounterPokemon(enc_id, spawn_id){
-    // TODO 
-    //add checks for input 
-
-    let res = await this.Call[{
-      request: 'ENCOUNTER',
-      message: {
-        encounter_id: enc_id,
-        spawn_point_id: spawn_id,
-        latitude: this.player.playerInfo.latitude,
-        longitude: this.player.playerInfo.longitude,
+        player_latitude: this.player.playerInfo.latitude,
+        player_longitude: this.player.playerInfo.longitude,
       }
     }]
     return res
