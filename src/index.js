@@ -32,12 +32,6 @@ class PokemonGOAPI {
     let res = await this.api.Request(req, this.player.playerInfo)
     return res
   }
-
-  async SetLocation(location){
-    var promise = await this.player.setLocation(location)
-    return promise
-  }
-
   async GetInventory(){
     let res = await this.Call[{ request: 'GET_INVENTORY' }]
     console.log('res')
@@ -48,6 +42,37 @@ class PokemonGOAPI {
     let res = await this.Call[{ request: 'GET_PLAYER' }]
     return res
   }
+
+  //
+  // HeartBeat
+  //
+
+  async ToggleHartBeat(){
+    this.useHartBeat = !this.useHartBeat
+    this._loopHartBeat()
+    return this.useHartBeat
+  }
+  async _loopHartBeat(){
+    while(this.useHartBeat){
+      var finalWalk = [];
+      m.getNeighbors(playerInfo).sort().forEach(function(k) {
+        finalWalk.push(k.id());
+      });
+      var nullarray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+      let res = await this.Call[{ 
+        request: 'GET_MAP_OBJECTS',
+        message: {
+          cell_id: 
+          since_timestamp_ms: nullarray,
+          latitude: this.player.playerInfo.latitude,
+          longitude: this.player.playerInfo.longitude,
+        } 
+      }]
+    }
+  }
+
+
 
 
 
