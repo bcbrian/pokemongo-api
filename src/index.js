@@ -11,7 +11,6 @@ class PokemonGOAPI {
     this.logged = false
     this.debug = true
     this.useHartBeat = false
-
   }
 
   async login(username, password, location, provider) {
@@ -19,6 +18,7 @@ class PokemonGOAPI {
     if (provider !== 'ptc' && provider !== 'google') {
       throw new Error('Invalid provider')
     }
+
     this.player.provider = provider
 
     await this.player.setLocation(location)
@@ -31,50 +31,43 @@ class PokemonGOAPI {
   //
   //This calls the API direct
   //
-  async Call(req) {
-    let res = await this.api.Request(req, this.player.playerInfo)
-    return res
+  Call(req) {
+    return this.api.Request(req, this.player.playerInfo)
   }
-  async GetInventory(){
-    let res = await this.Call[{ request: 'GET_INVENTORY' }]
-    console.log('res')
-    console.log(res)
-    return res
+
+  GetInventory(){
+    return this.Call([{ request: 'GET_INVENTORY' }])
   }
-  async GetPlayer(){
-    let res = await this.Call[{ request: 'GET_PLAYER' }]
-    return res
+
+  GetPlayer(){
+    return this.Call([{ request: 'GET_PLAYER' }])
   }
 
   //
   // HeartBeat
   //
-
   async ToggleHartBeat(){
     this.useHartBeat = !this.useHartBeat
     this._loopHartBeat()
     return this.useHartBeat
   }
+
   async _loopHartBeat(){
     while(this.useHartBeat){
       var finalWalk = this.map.getNeighbors(this.player.playerInfo)
       var nullarray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
-      let res = await this.Call[{ 
+      let res = await this.Call[{
         request: 'GET_MAP_OBJECTS',
         message: {
           cell_id: finalWalk,
           since_timestamp_ms: nullarray,
           latitude: this.player.playerInfo.latitude,
           longitude: this.player.playerInfo.longitude,
-        } 
+        }
       }]
     }
   }
-
-
-
-
 
 }
 
