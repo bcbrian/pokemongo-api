@@ -50,6 +50,16 @@ let res = await Poke.Call([ { request: 'GET_PLAYER' } ]) //get profile
 
 ## Available functions (more to come)
 
+
+### FortRecallPokemon()  //More to come
+### FortDeployPokemon()  //More to come
+### FortDetails()  //More to come
+### FortSearch()  //More to come
+### CatchPokemon()  //More to come
+### EncounterPokemon()  //More to come
+### ReleasePokemon()  //More to come
+### UseItemPotion()  //More to come
+
 ### GetPlayer()
 - Returns the Player Object.
 
