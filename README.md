@@ -5,7 +5,7 @@ THIS IS A WIP (Work in progress) feel free to help.
 
 ## Install
 ```
-npm i -S pokemongo-api-js
+npm i -S github:stoffern/pokemon-go-api
 ```
 
 
