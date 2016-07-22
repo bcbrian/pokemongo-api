@@ -26,6 +26,26 @@ let res = await Poke.Call([ { request: 'GET_PLAYER' } ]) //get profile
 
 ```
 
+# To-Do:
+- [x] Login as pokemon trainer + token
+- [x] Login over google + token
+- [x] API connector
+- [ ] Make all calls awailable in functions
+- [ ] Run to pokestops
+- [ ] Farm specific area for pokestops
+- [ ] Human walking logic
+- [ ] Catch Pokemon automatically
+- [ ] Drop items when bag is full
+- [ ] Scan your inventar for XYZ CP pokemon and release them
+- [ ] Pokemon catch filter
+- [ ] Hatch eggs
+- [ ] Incubate eggs
+- [ ] Evolve pokemons
+- [ ] Use candy
+- [x] Clean code
+- [ ] Fully automate this script
+
+
 
 ## Available functions (more to come)
 
