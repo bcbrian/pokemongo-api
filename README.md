@@ -31,6 +31,7 @@ let res = await Poke.Call([ { request: 'GET_PLAYER' } ]) //get profile
 - [x] Login over google + token
 - [x] API connector
 - [ ] Make all calls awailable in functions
+- [ ] Add proxy options to requests
 - [ ] Run to pokestops
 - [ ] Farm specific area for pokestops
 - [ ] Human walking logic
@@ -91,12 +92,35 @@ profile{
   }
 ```
 
+##Player functions
 
-### SetLocation(location)
-- Set new current location of player.
+### Poke.player.coords()
+- Returns array of coords: [latitude, longitude]
 
+### Poke.player.coords()
+- Returns array of coords
+
+### Poke.player.profile()
+- Returns player profile
+
+### Poke.player.createdDate()
+- Returns account creation date (dddd, MMMM Do YYYY, h:mm:ss a)
+
+### Poke.player.pokeStorage()
+- Returns poke storage amount
+
+### Poke.player.itemsStorage()
+- Returns items storage amount
+
+### Poke.player.currency()
+- Returns currencies
+
+### Poke.player.setLocation(location)
+- Sets user location
 Input:
+```
 ***location***: (required) Has to be a object of location:
+```
 ```js
 {
   type: 'name',
@@ -111,3 +135,5 @@ OR
   longitude: 0,
   altitude: 0,
 }
+
+

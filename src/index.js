@@ -8,6 +8,7 @@ class PokemonGOAPI {
     this.api = new API()
     this.logged = false
     this.debug = true
+
   }
 
   async login(username, password, location, provider) {
@@ -32,13 +33,15 @@ class PokemonGOAPI {
     return res
   }
 
-  async SetLocation(){
+  async SetLocation(location){
     var promise = await this.player.setLocation(location)
     return promise
   }
 
   async GetInventory(){
     let res = await this.Call[{ request: 'GET_INVENTORY' }]
+    console.log('res')
+    console.log(res)
     return res
   }
   async GetPlayer(){
