@@ -34,6 +34,7 @@ class Connection {
           console.log('err')
         }
       })
+      console.log(respt)
     })
   }
 
@@ -44,8 +45,6 @@ class Connection {
 
       var req = this._serializeRequest(reqs)
       var request = this._serializeHeader(req, userObj)
-
-      console.log(request)
       // //create buffer
       var protobuf = request.encode().toBuffer();
 
@@ -97,8 +96,8 @@ class Connection {
           console.error('[!] Endpoint set: '+ this.endPoint);
           resolve(this.endPoint)
         }else{
-          console.error('[!] Endpoint missing in request');
-          throw new Error('Endpoint missing in request');
+          console.error('[!] Endpoint missing in request, lets try again..');
+          this.setEndpoint(user)
         }
       })
     })
@@ -126,7 +125,7 @@ class Connection {
 
       var reqId = Requests.RequestType[req.request]
       var request = new Requests.Request({'request_type': reqId})
-      
+
       //set message?
       if (req.message != undefined){
         var MessageType = this._resolveProtoFilename(req.request)
