@@ -31,22 +31,22 @@ let res = await Poke.Call([ { request: 'GET_PLAYER' } ]) //get profile
 ### GetPlayer()
 
 Returns the Player Object: 
-```js
-  profile{
-    creation_time
-    username
-    team
-    tutorial
-    poke_storage
-    item_storage
-    daily_bonus{
-      NextCollectTimestampMs
-      NextDefenderBonusCollectTimestampMs
-    }
-    currency{
-      type
-      amount
-    }
+```json
+profile{
+  creation_time: 'Number'
+  username: 'String'
+  team: 'Number'
+  tutorial: 'Number/Boolean'
+  poke_storage: 'String'
+  item_storage: 'String'
+  daily_bonus{
+    NextCollectTimestampMs: 'Number'
+    NextDefenderBonusCollectTimestampMs: 'Number'
   }
+  currency{
+    type: 'String'
+    amount: 'Number'
+  }
+}
 ```
 
