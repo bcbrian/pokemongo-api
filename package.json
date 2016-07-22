@@ -4,7 +4,8 @@
   "description": "Pokemon Go API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "babel-node example/example.js"
   },
   "repository": {
     "type": "git",
