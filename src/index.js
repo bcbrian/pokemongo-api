@@ -179,6 +179,37 @@ class PokemonGOAPI {
     return res
   }
 
+  async ReleasePokemon(pokemon_id){
+    // TODO 
+    // add checks for input 
+    // pokemon_id = integer
+
+    let res = await this.Call([{
+      request: 'RELEASE_POKEMON',
+      message: {
+        pokemon_id: pokemon_id,
+      }
+    }])
+    return res
+  }
+
+  async UseItemPotion(item_id, pokemon_id){
+    // TODO 
+    // add checks for input 
+    // item_id = integer
+    // pokemon_id = integer
+    
+    let res = await this.Call([{
+      request: 'RELEASE_POKEMON',
+      message: {
+        item_id: item_id,
+        pokemon_id: pokemon_id,
+      }
+    }])
+    return res
+  }
+
+
 }
 
 export default PokemonGOAPI
