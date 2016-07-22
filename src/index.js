@@ -76,7 +76,7 @@ class PokemonGOAPI {
     var spin_modifier 0.85 + Math.random() * 0.15 
 
     let res = await this.Call[{
-      request: 'ENCOUNTER',
+      request: 'CATCH_POKEMON',
       message: {
         encounter_id: pokemon.encounter_id,
         pokeball: 1,
