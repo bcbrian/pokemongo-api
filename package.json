@@ -36,6 +36,7 @@
     "moment": "^2.14.1",
     "node-env-file": "^0.1.8",
     "protobufjs": "^5.0.1",
-    "request": "^2.73.0"
+    "request": "^2.73.0",
+    "sleep": "^3.0.1"
   }
 }
