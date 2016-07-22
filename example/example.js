@@ -17,7 +17,10 @@ const Poke = new PokeAPI()
 
 async function init() {
   const api = await Poke.login(username, password, location, provider)
-  let res = await Poke.Call(['GET_PLAYER']) //get profile
+  let res = await Poke.Call([ { request: 'GET_PLAYER' } ]) //get profile
+
+  console.log('we have user data')
+  console.log(res)
 }
 
 init()
