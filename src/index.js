@@ -24,10 +24,24 @@ class PokemonGOAPI {
     return this
   }
 
+  //
+  //This calls the API direct
+  //
   async Call(req) {
     let res = await this.api.Request(req, this.player.playerInfo)
     return res
   }
+
+  async GetInventory(){
+    let res = await this.Call[{ request: 'GET_INVENTORY' }]
+    return res
+  }
+  async GetPlayer(){
+    let res = await this.Call[{ request: 'GET_PLAYER' }]
+    return res
+  }
+
+
 
 }
 

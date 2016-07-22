@@ -25,7 +25,6 @@ class Connection {
         //setFileName 
         var ResponseType = this._resolveProtoFilename(req.request)
         ResponseType = ResponseType+'Response'
-        console.log(ResponseType)
         var Responses = POGOProtos.Networking.Responses
         try {
           respt[ResponseType] = Responses[ResponseType].decode(res.returns[key]);
@@ -34,7 +33,6 @@ class Connection {
           console.log('err')
         }
       })
-      console.log(respt)
     })
   }
 
