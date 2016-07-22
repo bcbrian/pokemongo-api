@@ -30,7 +30,7 @@ class Auth {
 
   async login(user, pass, provider) {
     let res;
-    
+
     console.log('[i] Logging with user: ' + user)
     if (provider === 'ptc') {
       res = await this.PokemonAccount(user, pass)
@@ -39,7 +39,7 @@ class Auth {
       res = await this.GoogleAccount(user, pass)
       console.log('[i] Received Google access token!')
     }
-    
+
     return res
   }
 
@@ -66,7 +66,7 @@ class Auth {
         }
       }
       this.request.get(loginOptions, (err, res, body) => {
-        if (err) reject(err)
+        if (err) return reject(err)
 
         const data = JSON.parse(body)
 
@@ -83,13 +83,13 @@ class Auth {
         }
 
         this.request.post(options, (err, response, body) => {
-          if (err) reject(err)
+          if (err) return reject(err)
 
           console.log(response.headers.location)
           if (body) {
               const loginData = JSON.parse(body);
               if (loginData.errors && loginData.errors.length !== 0) {
-                  return callback(new Error('Error logging in: ' + loginData.errors[0]), null);
+                  return reject(new Error('Error logging in: ' + loginData.errors[0]), null);
               }
           }
 
@@ -107,12 +107,13 @@ class Auth {
           }
 
           this.request.post(options, (err, response, body) => {
-            if (err) reject(err)
+            if (err) return reject(err)
 
-            var token = body.split('token=')[1];
-            token = token.split('&')[0];
+            var token = body.split('token=')[1]
+            token = token.split('&')[0]
 
-            if (!token) reject('Login failed')
+            if (!token)
+              return reject(new Error('Login failed'))
 
             console.log('[i] Login ok')
             console.log('[i] Session token: ' + token)
