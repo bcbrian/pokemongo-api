@@ -28,27 +28,19 @@ class Auth {
     this.accessToken = ''
   }
 
-  login(user, pass, provider) {
-    return new Promise( (resolve, reject) => {
-      console.log('[i] Logging with user: ' + user);
-      if (provider === 'ptc') {
-        this.PokemonAccount(user, pass)
-        .then( (res, err) => {
-          if (err) reject(err)
-
-          console.log('[i] Received PTC access token!')
-          resolve(res)
-        })
-      } else {
-        this.GoogleAccount(user, pass)
-        .then( (res, err) => {
-          if (err) reject(err)
-
-          console.log('[i] Received Google access token!')
-          resolve(res)
-        })
-      }
-    })
+  async login(user, pass, provider) {
+    let res;
+    
+    console.log('[i] Logging with user: ' + user)
+    if (provider === 'ptc') {
+      res = await this.PokemonAccount(user, pass)
+      console.log('[i] Received PTC access token!')
+    } else {
+      res = awiat this.GoogleAccount(user, pass)
+      console.log('[i] Received Google access token!')
+    }
+    
+    return res
   }
 
   GoogleAccount(user, pass) {
@@ -131,4 +123,5 @@ class Auth {
     })
   }
 }
+
 export default Auth
