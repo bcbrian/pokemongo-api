@@ -129,10 +129,10 @@ class PokemonGOAPI {
     let res = await this.Call([{
       request: 'FORT_SEARCH',
       message: {
-        fort_id: fort.fort_id
+        fort_id: fort.fort_id,
         player_latitude: this.player.playerInfo.latitude,
         player_longitude: this.player.playerInfo.longitude,
-        fort_latitude: fort.fort_latitude
+        fort_latitude: fort.fort_latitude,
         fort_longitude: fort.fort_longitude
       }
     }])
@@ -144,7 +144,7 @@ class PokemonGOAPI {
     // add checks for input 
     // pokemon = should be object with (encounter_id and spawn_point_id)
 
-    var spin_modifier 0.85 + Math.random() * 0.15 
+    var spin_modifier = 0.85 + Math.random() * 0.15 
 
     let res = await this.Call([{
       request: 'CATCH_POKEMON',
