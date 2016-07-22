@@ -22,16 +22,10 @@ class Connection {
       //we have response (returns = response we want.. now lets parse it)
       var respt = {};
       requests.map( (req,key) => {
-
         //setFileName 
-        var ResponseType = ''
-        req = req.split("_")
-        req.map( word => {
-          ResponseType += _.upperFirst(_.toLower(word))
-        })
-
-        ResponseType += 'Response'
-
+        var ResponseType = this._resolveProtoFilename(req.request)
+        ResponseType = ResponseType+'Response'
+        console.log(ResponseType)
         var Responses = POGOProtos.Networking.Responses
         try {
           respt[ResponseType] = Responses[ResponseType].decode(res.returns[key]);
@@ -43,7 +37,6 @@ class Connection {
     })
   }
 
-
   _request(reqs,userObj) {
     return new Promise( (resolve, reject) => {
       if (this.endPoint.length < 5 || !this.endPoint) throw new Error('No endPoint set!')
@@ -51,6 +44,8 @@ class Connection {
 
       var req = this._serializeRequest(reqs)
       var request = this._serializeHeader(req, userObj)
+
+      console.log(request)
       // //create buffer
       var protobuf = request.encode().toBuffer();
 
@@ -90,11 +85,11 @@ class Connection {
   setEndpoint(user){
     return new Promise( resolve => {
       this._request([
-        'GET_PLAYER',
-        'GET_HATCHED_EGGS',
-        'GET_INVENTORY',
-        'CHECK_AWARDED_BADGES',
-        'DOWNLOAD_SETTINGS',
+        {request: 'GET_PLAYER' },
+        {request: 'GET_HATCHED_EGGS' },
+        {request: 'GET_INVENTORY' },
+        {request: 'CHECK_AWARDED_BADGES' },
+        {request: 'DOWNLOAD_SETTINGS' },
       ],user)
       .then(res => {
         if (res.api_url){
@@ -108,6 +103,15 @@ class Connection {
       })
     })
   }
+
+  _resolveProtoFilename(call){
+    var fileName = ''
+    call = call.split("_")
+    call.map( word => {
+      fileName += _.upperFirst(_.toLower(word))
+    })
+    return fileName;
+  }
   
   _setEndpoint(body) {
     if (res.api_url) {
@@ -118,8 +122,18 @@ class Connection {
   
   _serializeRequest(reqs) {
     return reqs.map( req => {
-      var reqId = POGOProtos.Networking.Requests.RequestType[req]
-      return new POGOProtos.Networking.Requests.Request({'request_type': reqId})
+      var Requests = POGOProtos.Networking.Requests
+
+      var reqId = Requests.RequestType[req.request]
+      var request = new Requests.Request({'request_type': reqId})
+      
+      //set message?
+      if (req.message != undefined){
+        var MessageType = this._resolveProtoFilename(req.request)
+        MessageType = MessageType+'Message'
+        request.request_message = new Requests.Messages[MessageType](req.message)
+      }
+      return request
     })
   }
 
