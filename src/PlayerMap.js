@@ -1,22 +1,28 @@
+import s2 from 's2geometry-node'
+
 class PlayerMap {
   constructor(props) {
   }
 
-  
   getNeighbors(player){
-    var latlng = new s2.S2LatLng(player.latitude, player.longitude);
-    var origin = new s2.S2CellId(latlng).parent(15);
-    var walk = [origin];
-    var next = origin.next();
-    var prev = origin.prev();
-    [0,1,2,3,4,5,6,7,8,9].forEach(function(i) {
-      walk.push(prev);
-      walk.push(next);
-      next = next.next();
-      prev = prev.prev();
-    });
+    let
+    {latitude, longitude} = player,
+    origin = new s2.S2CellId(new s2.S2LatLng(latitude, longitude)).parent(15),
+    walk = [origin.id()],
+    next = origin.next(),
+    prev = origin.prev(),
+    i = 10
+
+    while(i--){
+      walk.push(prev.id())
+      walk.push(next.id())
+      next = next.next()
+      prev = prev.prev()
+    }
+
     return walk
   }
+
 }
 
-export default Map
+export default PlayerMap

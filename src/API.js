@@ -130,7 +130,7 @@ class Connection {
       //set message?
       if (req.message != undefined){
         var MessageType = this._resolveProtoFilename(req.request)
-        MessageType = MessageType+'Message'
+        MessageType += 'Message'
         request.request_message = new Requests.Messages[MessageType](req.message)
       }
       return request

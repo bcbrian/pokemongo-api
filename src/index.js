@@ -35,47 +35,47 @@ class PokemonGOAPI {
     return this.api.Request(req, this.player.playerInfo)
   }
 
-  GetInventory(){
+  GetInventory() {
     return this.Call([{ request: 'GET_INVENTORY' }])
   }
 
-  GetPlayer(){
+  GetPlayer() {
     return this.Call([{ request: 'GET_PLAYER' }])
   }
 
   //
   // HeartBeat
   //
-  async ToggleHartBeat(){
+  async ToggleHartBeat() {
     this.useHartBeat = !this.useHartBeat
     this._loopHartBeat()
     return this.useHartBeat
   }
 
-  async _loopHartBeat(){
+  async _loopHartBeat() {
     while(this.useHartBeat){
       var finalWalk = this.map.getNeighbors(this.player.playerInfo)
-      var nullarray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+      var nullarray = new Array(21).fill(0)
 
-      let res = await this.Call[{
+      let res = await this.Call([{
         request: 'GET_MAP_OBJECTS',
         message: {
           cell_id: finalWalk,
           since_timestamp_ms: nullarray,
           latitude: this.player.playerInfo.latitude,
-          longitude: this.player.playerInfo.longitude,
+          longitude: this.player.playerInfo.longitude
         }
-      }]
+      }])
     }
   }
 
-  async FortRecallPokemon(fort_id, pokemon_id){
-    // TODO 
-    // add checks for input 
+  FortRecallPokemon(fort_id, pokemon_id) {
+    // TODO
+    // add checks for input
     // fort_id
     // pokemon_id
 
-    let res = await this.Call[{
+    return this.Call([{
       request: 'FORT_RECALL_POKEMON',
       message: {
         fort_id: fort_id,
@@ -83,17 +83,16 @@ class PokemonGOAPI {
         player_latitude: this.player.playerInfo.latitude,
         player_longitude: this.player.playerInfo.longitude,
       }
-    }]
-    return res
+    }])
   }
 
-  async FortDeployPokemon(fort_id, pokemon_id){
-    // TODO 
-    // add checks for input 
+  FortDeployPokemon(fort_id, pokemon_id) {
+    // TODO
+    // add checks for input
     // fort_id
     // pokemon_id
-    
-    let res = await this.Call([{
+
+    return this.Call([{
       request: 'FORT_DEPLOY_POKEMON',
       message: {
         fort_id: fort_id,
@@ -102,15 +101,14 @@ class PokemonGOAPI {
         player_longitude: this.player.playerInfo.longitude,
       }
     }])
-    return res
   }
 
-  async FortDetails(fort){
-    // TODO 
-    // add checks for input 
+  FortDetails(fort) {
+    // TODO
+    // add checks for input
     // fort = should be object with (fort_id, latitude, longitude)
 
-    let res = await this.Call([{
+    return this.Call([{
       request: 'FORT_DETAILS',
       message: {
         fort_id: fort.fort_id,
@@ -118,15 +116,14 @@ class PokemonGOAPI {
         longitude: fort.longitude,
       }
     }])
-    return res
   }
 
-  async FortSearch(fort){
-    // TODO 
-    // add checks for input 
+  FortSearch(fort) {
+    // TODO
+    // add checks for input
     // fort = should be object with (fort_id,fort_latitude,fort_longitude)
 
-    let res = await this.Call([{
+    return this.Call([{
       request: 'FORT_SEARCH',
       message: {
         fort_id: fort.fort_id,
@@ -136,17 +133,16 @@ class PokemonGOAPI {
         fort_longitude: fort.fort_longitude
       }
     }])
-    return res
   }
 
-  async CatchPokemon(pokemon){
-    // TODO 
-    // add checks for input 
+  CatchPokemon(pokemon) {
+    // TODO
+    // add checks for input
     // pokemon = should be object with (encounter_id and spawn_point_id)
 
-    var spin_modifier = 0.85 + Math.random() * 0.15 
+    var spin_modifier = 0.85 + Math.random() * 0.15
 
-    let res = await this.Call([{
+    return this.Call([{
       request: 'CATCH_POKEMON',
       message: {
         encounter_id: pokemon.encounter_id,
@@ -158,55 +154,46 @@ class PokemonGOAPI {
         normalized_hit_position: 1.0,
       }
     }])
-    return res
   }
 
-  async EncounterPokemon(enc_id, spawn_id){
-    // TODO 
-    // add checks for input 
-    // enc_id = integer
-    // spawn_id = string
+  EncounterPokemon(encounter_id, spawn_point_id) {
+    // TODO
+    // add checks for input
+    // encounter_id = integer
+    // spawn_point_id = string
 
-    let res = await this.Call([{
+    return this.Call([{
       request: 'ENCOUNTER',
       message: {
-        encounter_id: enc_id,
-        spawn_point_id: spawn_id,
+        encounter_id,
+        spawn_point_id,
         player_latitude: this.player.playerInfo.latitude,
         player_longitude: this.player.playerInfo.longitude,
       }
     }])
-    return res
   }
 
-  async ReleasePokemon(pokemon_id){
-    // TODO 
-    // add checks for input 
+  ReleasePokemon(pokemon_id) {
+    // TODO
+    // add checks for input
     // pokemon_id = integer
 
-    let res = await this.Call([{
+    return this.Call([{
       request: 'RELEASE_POKEMON',
-      message: {
-        pokemon_id: pokemon_id,
-      }
+      message: { pokemon_id }
     }])
-    return res
   }
 
-  async UseItemPotion(item_id, pokemon_id){
-    // TODO 
-    // add checks for input 
+  UseItemPotion(item_id, pokemon_id) {
+    // TODO
+    // add checks for input
     // item_id = integer
     // pokemon_id = integer
-    
-    let res = await this.Call([{
-      request: 'RELEASE_POKEMON',
-      message: {
-        item_id: item_id,
-        pokemon_id: pokemon_id,
-      }
+
+    return this.Call([{
+      request: 'USE_ITEM_POTION',
+      message: { item_id, pokemon_id }
     }])
-    return res
   }
 
 
