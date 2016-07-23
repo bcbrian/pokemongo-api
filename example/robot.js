@@ -18,6 +18,7 @@ const Poke = new PokeAPI()
 
 async function init() {
   //yep, we do need to login..
+
   const api = await Poke.login(username, password, location, provider)
 
   // just update the profile...

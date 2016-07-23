@@ -3,6 +3,14 @@ import API from '~/API'
 import Pokemon from '~/Pokemon'
 import PlayerMap from '~/PlayerMap'
 
+/**
+ * Called if a parameter is missing and
+ * the default value is evaluated.
+ */
+function mandatory() {
+    throw new Error('Missing parameter');
+}
+
 class PokemonGOAPI {
 
   constructor(props) {
@@ -85,10 +93,7 @@ class PokemonGOAPI {
     return cells
   }
 
-  FortRecallPokemon(fort_id, pokemon_id) {
-    if (!fort_id > 0) throw new Error('FortRecallPokemon: Fort id missing')
-    if (!pokemon_id > 0) throw new Error('FortRecallPokemon: Pokemon id missing')
-
+  FortRecallPokemon(fort_id, pokemon_id = mandatory()) {
     return this.Call([{
       request: 'FORT_RECALL_POKEMON',
       message: {
@@ -100,10 +105,7 @@ class PokemonGOAPI {
     }])
   }
 
-  FortDeployPokemon(fort_id, pokemon_id) {
-    if (!fort_id > 0) throw new Error('FortDeployPokemon: Fort id missing')
-    if (!pokemon_id > 0) throw new Error('FortDeployPokemon: Pokemon id missing')
-
+  FortDeployPokemon(fort_id, pokemon_id = mandatory()) {
     return this.Call([{
       request: 'FORT_DEPLOY_POKEMON',
       message: {
@@ -115,9 +117,7 @@ class PokemonGOAPI {
     }])
   }
 
-  FortDetails(fort) {
-    if (fort.length > 0) throw new Error('FortDetails: Fort input not set')
-
+  FortDetails(fort = mandatory()) {
     return this.Call([{
       request: 'FORT_DETAILS',
       message: {
@@ -128,8 +128,7 @@ class PokemonGOAPI {
     }])
   }
 
-  FortSearch(fort) {
-    if (fort.length > 0) throw new Error('FortSearch: Fort input not set')
+  FortSearch(fort = mandatory()) {
 
     return this.Call([{
       request: 'FORT_SEARCH',
@@ -143,9 +142,7 @@ class PokemonGOAPI {
     }])
   }
 
-  CatchPokemon(pokemon) {
-    if (pokemon.length > 0) throw new Error('CatchPokemon: Pokemon input not set')
-
+  CatchPokemon(pokemon = mandatory()) {
     var spin_modifier = 0.85 + Math.random() * 0.15
 
     return this.Call([{
@@ -162,9 +159,7 @@ class PokemonGOAPI {
     }])
   }
 
-  EncounterPokemon(pokemon) {
-    if (pokemon.length > 0) throw new Error('EncounterPokemon: Pokemon input not set')
-
+  EncounterPokemon(pokemon = mandatory()) {
     return this.Call([{
       request: 'ENCOUNTER',
       message: {
@@ -176,19 +171,14 @@ class PokemonGOAPI {
     }])
   }
 
-  ReleasePokemon(pokemon_id) {
-    if (!pokemon_id > 0) throw new Error('ReleasePokemon: pokemon_id missing')
-
+  ReleasePokemon(pokemon_id = mandatory()) {
     return this.Call([{
       request: 'RELEASE_POKEMON',
       message: { pokemon_id }
     }])
   }
 
-  UseItemPotion(item_id, pokemon_id) {
-    if (!item_id > 0) throw new Error('UseItemPotion: item_id missing')
-    if (!pokemon_id > 0) throw new Error('UseItemPotion: pokemon_id missing')
-
+  UseItemPotion(item_id, pokemon_id = mandatory()) {
     return this.Call([{
       request: 'USE_ITEM_POTION',
       message: { item_id, pokemon_id }
