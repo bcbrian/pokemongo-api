@@ -38,6 +38,6 @@
     "node-env-file": "^0.1.8",
     "protobufjs": "^5.0.1",
     "request": "^2.73.0",
-    "s2geometry-node": "^1.1.0"
+    "s2geometry-node": "github:cypherix93/s2geometry-node#windows-fixes"
   }
 }
