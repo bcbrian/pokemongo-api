@@ -1,5 +1,6 @@
 import Player from '~/Player'
 import API from '~/API'
+import Pokemon from '~/Pokemon'
 import PlayerMap from '~/PlayerMap'
 
 class PokemonGOAPI {
@@ -39,8 +40,9 @@ class PokemonGOAPI {
     return this.Call([{ request: 'GET_INVENTORY' }])
   }
 
-  GetPlayer() {
-    return this.Call([{ request: 'GET_PLAYER' }])
+  async GetPlayer() {
+    let res = await this.Call([{ request: 'GET_PLAYER' }])
+    return res.GetPlayerResponse.player_data
   }
 
   //
@@ -60,11 +62,10 @@ class PokemonGOAPI {
     }
   }
 
-  GetMapObjects(){
-    var seconds = new Date().getTime();
+  async GetMapObjects() {
     var finalWalk = this.map.getNeighbors(this.player.playerInfo).sort()
     var nullarray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-    var res = this.Call([{
+    var res = await this.Call([{
       request: 'GET_MAP_OBJECTS',
       message: {
         cell_id: finalWalk,
@@ -73,7 +74,15 @@ class PokemonGOAPI {
         longitude: this.player.playerInfo.longitude
       }
     }])
-    return res
+    let cells = res.GetMapObjectsResponse.map_cells
+
+    for(let cell of cells) {
+      cell.catchable_pokemons = cell.catchable_pokemons.map(pokemon =>
+        new Pokemon(pokemon)
+      )
+    }
+
+    return cells
   }
 
   FortRecallPokemon(fort_id, pokemon_id) {

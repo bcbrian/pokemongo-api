@@ -1,14 +1,11 @@
-import env from 'node-env-file'
 import PokeAPI from '../src'
-
-env(__dirname + '/.env');
 
 //Set environment variables or replace placeholder text
 var location = {
     type: 'coords',
     coords: {
-      latitude: 40.759211,
-      longitude: -73.984472,
+      latitude: 59.236641,
+      longitude: 17.954995,
       altitude: 0,
     }
 };
@@ -26,30 +23,29 @@ async function init() {
   // just update the profile...
   let player = await Poke.GetPlayer()
 
-  //get map objects..
-  let map = await Poke.GetMapObjects()
-  for(let cell of map.GetMapObjectsResponse.map_cells) {
+  // get map objects..
+  let cells = await Poke.GetMapObjects()
 
-    //catchable pokemons from here?
+  for(let cell of cells) {
+
+    // catchable pokemons from here?
     if (cell.catchable_pokemons.length > 0){
-      //we have wild pokemons
-
+      // we have wild pokemons
     }
 
-    //wild pokemons
+    // wild pokemons
     if (cell.wild_pokemons.length > 0){
-      //we have wild pokemons
+      // we have wild pokemons
     }
 
-    //forts
+    // forts
     if (cell.forts.length > 0){
-      //we have wild pokemons
+      // we have wild pokemons
     }
 
-    console.log(cell.catchable_pokemons.length)
     //Done...
     //TODO: We need to move.. like a human..!
   }
 }
 
-init()
+init().catch(console.log)

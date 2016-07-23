@@ -1,22 +1,25 @@
-import GeoLib from 'geolib'
+import pokedex from './pokedex.json'
 
-import PokemonList from './pokemons.json'
+var pokedexMap = new Map();
+
+for(let p of pokedex.pokemon)
+  pokedexMap.set(p.id, p)
 
 class Pokemon{
   constructor(props) {
+    Object.assign(this, props, pokedexMap.get(props.pokemon_id))
+    delete this.id
+    console.log(`[i] found ${this.name}. Direction: ${this.direction}`)
   }
-  Catch(){
+
+  get direction(){
+    let google = 'https://www.google.com/maps/dir/Current+Location/'
+    return google + `${this.latitude},${this.longitude}`
+  }
+
+  Catch() {
 
   }
-  Find(){
-    
-  }
-  
-  GetPokemonName(id){
-    var pokemons = JSON.parse(PokemonList)
-    pokemons.map( pok => {
-      if (pok.id == id) return pok
-    })
-  }
+
 }
 export default Pokemon
