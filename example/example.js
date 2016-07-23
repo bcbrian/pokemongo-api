@@ -1,4 +1,7 @@
+import env from 'node-env-file'
 import PokeAPI from '../src'
+
+env(__dirname + '/.env');
 
 //Set environment variables or replace placeholder text
 var location = {
@@ -14,13 +17,8 @@ const Poke = new PokeAPI()
 
 async function init() {
   const api = await Poke.login(username, password, location, provider)
-  // let player = await Poke.GetPlayer() //get profile
-  // Poke.ToggleHartBeat() //get inventory
-  let res = await Poke.test()
+  let res = await Poke.GetPlayer() //get profile
   console.log(res)
-  setInterval(()=>{}, 50000)
-  // console.log(new Date(player.GetPlayerResponse.player_data.creation_timestamp_ms.toNumber()))
-  // console.log(JSON.stringify(res, null, '  '))
 }
 
-init().catch(console.log)
+init()
