@@ -33,6 +33,9 @@ async function init() {
   console.log(res2)
   let res3 = await Poke.GetMapObjects()
   console.log(res3)
+
+  //walk a little..
+  Poke.player.WalkAround()
 }
 
 init()

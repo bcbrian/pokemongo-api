@@ -84,6 +84,22 @@ class Player {
     return this.playerInfo
   }
 
+  teleport(lat,long,alt){
+    this.playerInfo.latitude = lat
+    this.playerInfo.longitude = long  
+    this.playerInfo.altitude = alt  
+  }
+  
+  walkAround(){
+    let latMorP = Math.random() < 0.5 ? -1 : 1
+    let latRand = ((Math.floor((Math.random() * 100) + 1))/1000000)*latMorP
+    latMorP = Math.random() < 0.5 ? -1 : 1
+    let longRand = ((Math.floor((Math.random() * 100) + 1))/1000000)*latMorP
+
+    this.playerInfo.latitude = this.playerInfo.latitude+latRand
+    this.playerInfo.longitude = this.playerInfo.longitude+longRand  
+  }
+
   setLocation(location) {
     return new Promise(resolve => {
       if (location.type !== 'name' && location.type !== 'coords')
