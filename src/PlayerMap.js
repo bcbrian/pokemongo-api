@@ -11,7 +11,7 @@ class PlayerMap {
     walk = [origin.id()],
     next = origin.next(),
     prev = origin.prev(),
-    i = 10
+    i = 10;
 
     while(i--){
       walk.push(prev.id())

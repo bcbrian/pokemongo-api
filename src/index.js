@@ -54,19 +54,26 @@ class PokemonGOAPI {
 
   async _loopHartBeat() {
     while(this.useHartBeat){
-      var finalWalk = this.map.getNeighbors(this.player.playerInfo)
-      var nullarray = new Array(21).fill(0)
-
-      let res = await this.Call([{
-        request: 'GET_MAP_OBJECTS',
-        message: {
-          cell_id: finalWalk,
-          since_timestamp_ms: nullarray,
-          latitude: this.player.playerInfo.latitude,
-          longitude: this.player.playerInfo.longitude
-        }
-      }])
+      setInterval(() => {
+        var area = this.GetMapObjects()
+      },2000);
     }
+  }
+
+  GetMapObjects(){
+    var seconds = new Date().getTime();
+    var finalWalk = this.map.getNeighbors(this.player.playerInfo).sort()
+    var nullarray = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    var res = this.Call([{
+      request: 'GET_MAP_OBJECTS',
+      message: {
+        cell_id: finalWalk,
+        since_timestamp_ms: nullarray,
+        latitude: this.player.playerInfo.latitude,
+        longitude: this.player.playerInfo.longitude
+      }
+    }])
+    return res
   }
 
   FortRecallPokemon(fort_id, pokemon_id) {

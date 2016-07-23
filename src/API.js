@@ -27,9 +27,10 @@ class Connection {
       var Responses = POGOProtos.Networking.Responses
       try {
         respt[ResponseType] = Responses[ResponseType].decode(res.returns[key])
+        console.log('[i] Received OK: '+ResponseType)
       } catch(error) {
-        respt[ResponseType] = {error}
-        console.log('err')
+        console.log('[!] Response error!')
+        throw new Error('Response error!')
       }
     })
 
@@ -39,13 +40,14 @@ class Connection {
   _request(reqs,userObj) {
     return new Promise( resolve => {
       if (this.endPoint.length < 5 || !this.endPoint)
-        throw new Error('No endPoint set!')
+        throw new Error('[!] No endPoint set!')
 
       if (userObj.latitude == 0 || userObj.longitude == 0)
-        throw new Error('position missing')
+        throw new Error('[!] position missing')
 
       var req = this._serializeRequest(reqs)
       var request = this._serializeHeader(req, userObj)
+
       // //create buffer
       var protobuf = request.encode().toBuffer();
 
@@ -131,7 +133,7 @@ class Connection {
       if (req.message != undefined){
         var MessageType = this._resolveProtoFilename(req.request)
         MessageType += 'Message'
-        request.request_message = new Requests.Messages[MessageType](req.message)
+        request.request_message = new Requests.Messages[MessageType](req.message).encode()
       }
       return request
     })
