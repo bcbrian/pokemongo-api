@@ -29,7 +29,7 @@ async function init() {
 
   //get map objects..
   let map = await Poke.GetMapObjects()
-  map.GetMapObjectsResponse.map_cells.map( cell => {
+  for(let cell of map.GetMapObjectsResponse.map_cells) {
 
     //catchable pokemons from here?
     if (cell.catchable_pokemons.length > 0){
@@ -50,8 +50,7 @@ async function init() {
     console.log(cell.catchable_pokemons.length)
     //Done...
     //TODO: We need to move.. like a human..!
-
-  });
+  }
 }
 
 init()
