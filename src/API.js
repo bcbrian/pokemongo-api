@@ -6,7 +6,7 @@ import _ from 'lodash'
 import fetch from 'node-fetch'
 import ProtoBuf from 'protobufjs'
 
-const POGOProtos = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/POGOProtos.proto" }).build("POGOProtos")
+const POGOProtos = ProtoBuf.loadProtoFile({ root: "./", file: "POGOProtos/POGOProtos.proto" }).build("POGOProtos")
 
 class Connection {
   constructor(props) {

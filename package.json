@@ -1,10 +1,11 @@
 {
-  "name": "pokemon-go-api",
-  "version": "0.0.1",
+  "name": "pokemongo-api",
+  "version": "0.0.2",
   "description": "Pokemon Go API",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "babel --presets es2015,stage-0 -d lib/ src/",
+    "prepublish": "npm run compile",
     "example": "babel-node example/example.js",
     "robot": "babel-node example/robot.js"
   },

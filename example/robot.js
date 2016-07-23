@@ -1,4 +1,4 @@
-import PokeAPI from '../src'
+import PokeAPI from '../lib'
 
 //Set environment variables or replace placeholder text
 var location = {
