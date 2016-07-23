@@ -70,10 +70,8 @@ class PokemonGOAPI {
   }
 
   FortRecallPokemon(fort_id, pokemon_id) {
-    // TODO
-    // add checks for input
-    // fort_id
-    // pokemon_id
+    if (!fort_id > 0) throw new Error('FortRecallPokemon: Fort id missing')
+    if (!pokemon_id > 0) throw new Error('FortRecallPokemon: Pokemon id missing')
 
     return this.Call([{
       request: 'FORT_RECALL_POKEMON',
@@ -87,10 +85,8 @@ class PokemonGOAPI {
   }
 
   FortDeployPokemon(fort_id, pokemon_id) {
-    // TODO
-    // add checks for input
-    // fort_id
-    // pokemon_id
+    if (!fort_id > 0) throw new Error('FortDeployPokemon: Fort id missing')
+    if (!pokemon_id > 0) throw new Error('FortDeployPokemon: Pokemon id missing')
 
     return this.Call([{
       request: 'FORT_DEPLOY_POKEMON',
@@ -104,9 +100,7 @@ class PokemonGOAPI {
   }
 
   FortDetails(fort) {
-    // TODO
-    // add checks for input
-    // fort = should be object with (fort_id, latitude, longitude)
+    if (fort.length > 0) throw new Error('FortDetails: Fort input not set')
 
     return this.Call([{
       request: 'FORT_DETAILS',
@@ -119,9 +113,7 @@ class PokemonGOAPI {
   }
 
   FortSearch(fort) {
-    // TODO
-    // add checks for input
-    // fort = should be object with (fort_id,fort_latitude,fort_longitude)
+    if (fort.length > 0) throw new Error('FortSearch: Fort input not set')
 
     return this.Call([{
       request: 'FORT_SEARCH',
@@ -136,9 +128,7 @@ class PokemonGOAPI {
   }
 
   CatchPokemon(pokemon) {
-    // TODO
-    // add checks for input
-    // pokemon = should be object with (encounter_id and spawn_point_id)
+    if (pokemon.length > 0) throw new Error('CatchPokemon: Pokemon input not set')
 
     var spin_modifier = 0.85 + Math.random() * 0.15
 
@@ -157,10 +147,8 @@ class PokemonGOAPI {
   }
 
   EncounterPokemon(encounter_id, spawn_point_id) {
-    // TODO
-    // add checks for input
-    // encounter_id = integer
-    // spawn_point_id = string
+    if (!encounter_id > 0) throw new Error('EncounterPokemon: encounter_id missing')
+    if (!spawn_point_id > 0) throw new Error('EncounterPokemon: spawn_point_id missing')
 
     return this.Call([{
       request: 'ENCOUNTER',
@@ -174,9 +162,7 @@ class PokemonGOAPI {
   }
 
   ReleasePokemon(pokemon_id) {
-    // TODO
-    // add checks for input
-    // pokemon_id = integer
+    if (!pokemon_id > 0) throw new Error('ReleasePokemon: pokemon_id missing')
 
     return this.Call([{
       request: 'RELEASE_POKEMON',
@@ -185,10 +171,8 @@ class PokemonGOAPI {
   }
 
   UseItemPotion(item_id, pokemon_id) {
-    // TODO
-    // add checks for input
-    // item_id = integer
-    // pokemon_id = integer
+    if (!item_id > 0) throw new Error('UseItemPotion: item_id missing')
+    if (!pokemon_id > 0) throw new Error('UseItemPotion: pokemon_id missing')
 
     return this.Call([{
       request: 'USE_ITEM_POTION',
