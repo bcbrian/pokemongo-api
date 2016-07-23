@@ -9,6 +9,15 @@ var location = {
     name: process.env.PGO_LOCATION || 'Times Square'
 };
 
+// var location = {
+//     type: 'coords',
+//     coords: {
+//       latitude: 40.759211,
+//       longitude: -73.984472,
+//       altitude: 0,
+//     }
+// };
+
 var username = process.env.PGO_USERNAME || 'USER'
 var password = process.env.PGO_PASSWORD || 'PASS'
 var provider = process.env.PGO_PROVIDER || 'ptc'

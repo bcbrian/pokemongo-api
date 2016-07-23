@@ -85,7 +85,6 @@ class Auth {
         this.request.post(options, (err, response, body) => {
           if (err) return reject(err)
 
-          console.log(response.headers.location)
           if (body) {
               const loginData = JSON.parse(body);
               if (loginData.errors && loginData.errors.length !== 0) {

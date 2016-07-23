@@ -5,8 +5,12 @@ env(__dirname + '/.env');
 
 //Set environment variables or replace placeholder text
 var location = {
-    type: 'name',
-    name: process.env.PGO_LOCATION || 'Times Square'
+    type: 'coords',
+    coords: {
+      latitude: 40.759211,
+      longitude: -73.984472,
+      altitude: 0,
+    }
 };
 
 var username = process.env.PGO_USERNAME || 'USER'
@@ -20,15 +24,16 @@ async function init() {
   const api = await Poke.login(username, password, location, provider)
 
   // just update the profile...
-  let res = await Poke.GetPlayer()
+  let player = await Poke.GetPlayer()
 
   //get map objects..
-  let res = await Poke.GetMapObjects()
-  res.GetMapObjectsResponse.map_cells.map( cell => {
+  let map = await Poke.GetMapObjects()
+  map.GetMapObjectsResponse.map_cells.map( cell => {
 
     //catchable pokemons from here?
     if (cell.catchable_pokemons.length > 0){
       //we have wild pokemons
+
     }
 
     //wild pokemons
@@ -40,6 +45,10 @@ async function init() {
     if (cell.forts.length > 0){
       //we have wild pokemons
     }
+
+    console.log(cell.catchable_pokemons.length)
+    //Done...
+    //TODO: We need to move.. like a human..!
 
   });
 }

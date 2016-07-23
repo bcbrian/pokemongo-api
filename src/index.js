@@ -153,15 +153,14 @@ class PokemonGOAPI {
     }])
   }
 
-  EncounterPokemon(encounter_id, spawn_point_id) {
-    if (!encounter_id > 0) throw new Error('EncounterPokemon: encounter_id missing')
-    if (!spawn_point_id > 0) throw new Error('EncounterPokemon: spawn_point_id missing')
+  EncounterPokemon(pokemon) {
+    if (pokemon.length > 0) throw new Error('EncounterPokemon: Pokemon input not set')
 
     return this.Call([{
       request: 'ENCOUNTER',
       message: {
-        encounter_id,
-        spawn_point_id,
+        encounter_id: pokemon.encounter_id,
+        spawn_point_id: pokemon.spawn_point_id,
         player_latitude: this.player.playerInfo.latitude,
         player_longitude: this.player.playerInfo.longitude,
       }
