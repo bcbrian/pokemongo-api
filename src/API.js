@@ -3,7 +3,7 @@ import {
 } from '../env'
 
 import _ from 'lodash'
-import Request from 'request'
+import fetch from 'node-fetch'
 import ProtoBuf from 'protobufjs'
 
 const POGOProtos = ProtoBuf.loadProtoFile({ root: "./src/", file: "POGOProtos/POGOProtos.proto" }).build("POGOProtos")
@@ -12,8 +12,6 @@ class Connection {
   constructor(props) {
     this.endPoint = API_URL
     this.auth_ticket = null
-    this.cookieJar = Request.jar()
-    this.request = Request.defaults({jar: this.cookieJar})
   }
 
   async Request(requests, userObj){
@@ -37,53 +35,67 @@ class Connection {
     return respt
   }
 
-  _request(reqs,userObj) {
-    return new Promise( resolve => {
-      if (this.endPoint.length < 5 || !this.endPoint)
-        throw new Error('[!] No endPoint set!')
+  async _request(reqs,userObj) {
 
-      if (userObj.latitude == 0 || userObj.longitude == 0)
-        throw new Error('[!] position missing')
+    if (this.endPoint.length < 5 || !this.endPoint)
+      throw new Error('[!] No endPoint set!')
 
-      var req = this._serializeRequest(reqs)
-      var request = this._serializeHeader(req, userObj)
+    if (userObj.latitude == 0 || userObj.longitude == 0)
+      throw new Error('[!] position missing')
 
-      // //create buffer
-      var protobuf = request.encode().toBuffer();
+    var req = this._serializeRequest(reqs)
+    var request = this._serializeHeader(req, userObj)
 
-      var options = {
-        url: this.endPoint,
-        body: protobuf,
-        encoding: null,
-        headers: {
-          'User-Agent': 'Niantic App'
-        }
+    // //create buffer
+    var protobuf = request.encode().toBuffer();
+
+    var options = {
+      url: this.endPoint,
+      body: protobuf,
+      encoding: null,
+      headers: {
+        'User-Agent': 'Niantic App'
       }
+    }
 
-      this.request.post(options, (err, response, body) => {
-        if (response === undefined || body === undefined) {
-          console.error('[!] RPC Server offline');
-          throw new Error('RPC Server offline');
-        }
+    // Temp https://github.com/bitinn/node-fetch/issues/136
+    var stream = require('stream');
+    var bufferStream = new stream.PassThrough();
+    bufferStream.end(protobuf);
 
-        try {
-          var res = POGOProtos.Networking.Envelopes.ResponseEnvelope.decode(body);
-        } catch (e) {
-          if (e.decoded) { // Truncated
-            console.warn(e);
-            res = e.decoded; // Decoded message with missing required fields
-          }
-        }
-
-        if (res.auth_ticket)
-          this.auth_ticket = res.auth_ticket
-
-        if (res.returns)
-          resolve(res)
-        else
-          throw new Error("Nothing in reponse..")
-      })
+    let res = await fetch(this.endPoint, {
+      body: bufferStream,
+      method: 'POST',
+      headers: {
+        'User-Agent': 'Niantic App'
+      }
     })
+
+    // Temp https://github.com/bitinn/node-fetch/issues/51
+    // Temp https://github.com/bitinn/node-fetch/pull/70
+    let body = await new Promise(resolve => {
+      let chunks = []
+      res.body
+        .on('data', chunk => chunks.push(chunk))
+        .on('end', () => resolve(Buffer.concat(chunks)))
+    })
+
+    try {
+      res = POGOProtos.Networking.Envelopes.ResponseEnvelope.decode(body);
+    } catch (e) {
+      if (e.decoded) { // Truncated
+        console.warn(e);
+        res = e.decoded; // Decoded message with missing required fields
+      }
+    }
+
+    if (res.auth_ticket)
+      this.auth_ticket = res.auth_ticket
+
+    if (res.returns)
+      return res
+    else
+      throw new Error("Nothing in reponse..")
   }
 
   async setEndpoint(user){
