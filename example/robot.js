@@ -16,14 +16,32 @@ var provider = process.env.PGO_PROVIDER || 'ptc'
 const Poke = new PokeAPI()
 
 async function init() {
+  //yep, we do need to login..
   const api = await Poke.login(username, password, location, provider)
 
+  // just update the profile...
   let res = await Poke.GetPlayer()
-  console.log(res)
-  let res2 = await Poke.GetInventory()
-  console.log(res2)
-  let res3 = await Poke.GetMapObjects()
-  console.log(res3)
+
+  //get map objects..
+  let res = await Poke.GetMapObjects()
+  res.GetMapObjectsResponse.map_cells.map( cell => {
+
+    //catchable pokemons from here?
+    if (cell.catchable_pokemons.length > 0){
+      //we have wild pokemons
+    }
+
+    //wild pokemons
+    if (cell.wild_pokemons.length > 0){
+      //we have wild pokemons
+    }
+
+    //forts
+    if (cell.forts.length > 0){
+      //we have wild pokemons
+    }
+
+  });
 }
 
 init()
