@@ -38,4 +38,4 @@ async function init() {
   Poke.player.WalkAround()
 }
 
-init()
+init().catch(console.log)
