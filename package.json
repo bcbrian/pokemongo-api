@@ -1,10 +1,10 @@
 {
   "name": "pokemongo-api",
-  "version": "0.0.2",
+  "version": "0.1.5",
   "description": "Pokemon Go API",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "compile": "babel --presets es2015,stage-0 -d lib/ src/",
+    "compile": "babel --presets es2015,stage-0 -d dist/ src/",
     "prepublish": "npm run compile",
     "example": "babel-node example/example.js",
     "robot": "babel-node example/robot.js"
@@ -39,6 +39,7 @@
     "moment": "^2.14.1",
     "node-env-file": "^0.1.8",
     "node-fetch": "^1.5.3",
+    "path": "^0.12.7",
     "protobufjs": "^5.0.1",
     "s2": "^0.4.0"
   }

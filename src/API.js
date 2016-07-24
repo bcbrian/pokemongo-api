@@ -4,9 +4,15 @@ import {
 
 import _ from 'lodash'
 import fetch from 'node-fetch'
-import ProtoBuf from 'protobufjs'
+import Protobuf from 'protobufjs'
+import path from 'path'
 
-const POGOProtos = ProtoBuf.loadProtoFile({ root: "./", file: "POGOProtos/POGOProtos.proto" }).build("POGOProtos")
+var builder = Protobuf.newBuilder();
+
+
+var rootPath= path.join(__dirname,'../')
+var bufferFile = Protobuf.loadProtoFile({ root: rootPath, file: "POGOProtos/POGOProtos.proto" })
+const POGOProtos = bufferFile.build("POGOProtos")
 
 class Connection {
   constructor(props) {

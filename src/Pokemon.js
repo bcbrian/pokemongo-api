@@ -1,4 +1,4 @@
-import pokedex from './pokedex.json'
+import pokedex from '../pokedex.json'
 
 var pokedexMap = new Map();
 

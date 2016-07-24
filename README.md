@@ -1,30 +1,18 @@
-# pokemon-go-api
+# pokemongo-api
 Pokemon Go API for nodejs
 
-THIS IS A WIP (Work in progress) feel free to help.
+
+Query the Pokemon database for what you want..
+This library covers all functions available in the api throu `Call()`
+We are also working now to port all calls into functions,
 
 ## Install
 ```
-npm i -S github:stoffern/pokemon-go-api
+npm i -S pokemongo-api
 ```
-
 
 ## Example
-
-```js
-import Poke from pokemongo-api-js
-```
-
-```js
-const Poke = new PokeAPI()
-const api = await Poke.login(username, password, location, provider)
-let profile = await Poke.GetPlayer() //this returns a object with the user profile
-
-
-//To call API Direct (Only for advanced usage)
-let res = await Poke.Call([ { request: 'GET_PLAYER' } ]) //get profile
-
-```
+See /example folder
 
 # To-Do:
 - [x] Login as pokemon trainer + token
