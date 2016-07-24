@@ -94,9 +94,9 @@ var Player = function () {
     key: 'walkAround',
     value: function walkAround() {
       var latMorP = Math.random() < 0.5 ? -1 : 1;
-      var latRand = Math.floor(Math.random() * 100 + 1) / 1000000 * latMorP;
+      var latRand = Math.floor(Math.random() * 100 + 1) / 10000000 * latMorP;
       latMorP = Math.random() < 0.5 ? -1 : 1;
-      var longRand = Math.floor(Math.random() * 100 + 1) / 1000000 * latMorP;
+      var longRand = Math.floor(Math.random() * 100 + 1) / 10000000 * latMorP;
 
       this.playerInfo.latitude = this.playerInfo.latitude + latRand;
       this.playerInfo.longitude = this.playerInfo.longitude + longRand;

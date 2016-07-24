@@ -1,4 +1,4 @@
-import s2 from 's2geometry-node'
+import s2 from 's2'
 
 class PlayerMap {
   constructor(props) {
