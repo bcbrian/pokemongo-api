@@ -92,9 +92,9 @@ class Player {
   
   walkAround(){
     let latMorP = Math.random() < 0.5 ? -1 : 1
-    let latRand = ((Math.floor((Math.random() * 100) + 1))/1000000)*latMorP
+    let latRand = ((Math.floor((Math.random() * 100) + 1))/10000000)*latMorP
     latMorP = Math.random() < 0.5 ? -1 : 1
-    let longRand = ((Math.floor((Math.random() * 100) + 1))/1000000)*latMorP
+    let longRand = ((Math.floor((Math.random() * 100) + 1))/10000000)*latMorP
 
     this.playerInfo.latitude = this.playerInfo.latitude+latRand
     this.playerInfo.longitude = this.playerInfo.longitude+longRand  
