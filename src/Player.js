@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import GeoCoder from 'geocoder'
 import moment from 'moment'
 import Auth from '~/Auth'
@@ -86,10 +87,10 @@ class Player {
 
   teleport(lat,long,alt){
     this.playerInfo.latitude = lat
-    this.playerInfo.longitude = long  
-    this.playerInfo.altitude = alt  
+    this.playerInfo.longitude = long
+    this.playerInfo.altitude = alt
   }
-  
+
   walkAround(){
     let latMorP = Math.random() < 0.5 ? -1 : 1
     let latRand = ((Math.floor((Math.random() * 100) + 1))/10000000)*latMorP
@@ -97,7 +98,7 @@ class Player {
     let longRand = ((Math.floor((Math.random() * 100) + 1))/10000000)*latMorP
 
     this.playerInfo.latitude = this.playerInfo.latitude+latRand
-    this.playerInfo.longitude = this.playerInfo.longitude+longRand  
+    this.playerInfo.longitude = this.playerInfo.longitude+longRand
   }
 
   setLocation(location) {
@@ -107,7 +108,7 @@ class Player {
 
       // use google map search by name
       if (location.type === 'name') {
-        if (!location.name) 
+        if (!location.name)
           throw new Error('You should add a location name')
 
         const locationName = location.name;

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _s = require('s2');
+require("babel-polyfill");
+
+var _s = require("s2");
 
 var _s2 = _interopRequireDefault(_s);
 
@@ -20,7 +22,7 @@ var PlayerMap = function () {
   }
 
   _createClass(PlayerMap, [{
-    key: 'getNeighbors',
+    key: "getNeighbors",
     value: function getNeighbors(player) {
       var latitude = player.latitude;
 

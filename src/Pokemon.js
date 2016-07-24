@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import pokedex from '../pokedex.json'
 
 var pokedexMap = new Map();

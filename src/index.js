@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import Player from '~/Player'
 import API from '~/API'
 import Pokemon from '~/Pokemon'

@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import {
   API_URL
 } from '../env'

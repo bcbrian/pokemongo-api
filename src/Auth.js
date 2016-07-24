@@ -1,4 +1,4 @@
-
+import "babel-polyfill";
 import GoogleOAuth from 'gpsoauthnode'
 import Request from 'request'
 
