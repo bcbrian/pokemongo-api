@@ -1,5 +1,5 @@
 import env from 'node-env-file'
-import PokeAPI from '../src'
+import PokeAPI from '../lib'
 
 env(__dirname + '/.env');
 
