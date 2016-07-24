@@ -1,7 +1,7 @@
 import env from 'node-env-file'
 import PokeAPI from '../src'
 
-env(__dirname + '/.env');
+// env(__dirname + '../env');
 
 //Set environment variables or replace placeholder text
 var location = {
@@ -18,8 +18,9 @@ var location = {
 //     }
 // };
 
-var username = process.env.PGO_USERNAME || 'USER'
-var password = process.env.PGO_PASSWORD || 'PASS'
+
+var username = process.env.PGO_USERNAME || 'pokemarker'
+var password = process.env.PGO_PASSWORD || '1234567890'
 var provider = process.env.PGO_PROVIDER || 'ptc'
 
 const Poke = new PokeAPI()
